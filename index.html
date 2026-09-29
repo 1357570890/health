@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>研途生活健康中枢 - 在读研究生全天日程与自律系统</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔬</text></svg>">
+  <!-- 手机端全屏添加到主屏幕支持 (PWA-Ready) -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="研途健康">
+  <meta name="theme-color" content="#0f172a">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            slate: {
+              750: '#293548'
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 antialiased selection:bg-emerald-500 selection:text-white">
+  <!-- 挂载节点 -->
+  <div id="app"></div>
+
+  <!-- 主业务入口模块 -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
