@@ -5,6 +5,8 @@ import { renderTimetableContainer } from "./components/timetable/timetableContai
 import { renderPlanContainer } from "./components/plans/planContainer.js";
 import { renderToolContainer } from "./components/tools/toolContainer.js";
 import { store } from "./core/store.js";
+import { syncService } from "./core/syncService.js";
+import { playGentleChime } from "./core/utils.js";
 
 class App {
   constructor() {
@@ -15,12 +17,35 @@ class App {
 
     this.appRoot = document.getElementById("app");
     this.initTheme();
+    this.checkUrlSync();
     this.render();
 
     // 订阅数据变动
     store.subscribe("stateChanged", () => {
       this.renderMainContent();
     });
+  }
+
+  async checkUrlSync() {
+    try {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith("#sync=")) {
+        const rawCode = decodeURIComponent(hash.substring(6));
+        const decoded = JSON.parse(atob(rawCode));
+        if (decoded.token && decoded.gistId) {
+          syncService.saveConfig({ token: decoded.token, gistId: decoded.gistId });
+          // 清除 URL hash 防止留在浏览器历史记录
+          history.replaceState(null, "", window.location.pathname + window.location.search);
+          await syncService.pullFromCloud();
+          playGentleChime(659.25, 0.2);
+          setTimeout(() => {
+            alert("🎉 恭喜！跨端云同步已自动完成配对与初次拉取！");
+          }, 200);
+        }
+      }
+    } catch (e) {
+      console.warn("URL sync config parse error:", e);
+    }
   }
 
   initTheme() {

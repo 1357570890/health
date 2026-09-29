@@ -8,6 +8,8 @@ export function renderSyncModal(onClose) {
 
   function renderContent() {
     const info = syncService.getStatus();
+    const code = info.isConfigured ? btoa(JSON.stringify(syncService.config)) : "";
+    const pairUrl = info.isConfigured ? `${window.location.origin}${window.location.pathname}#sync=${encodeURIComponent(code)}` : "";
 
     overlay.innerHTML = `
       <div class="bg-white dark:bg-slate-800 rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4 max-h-[90vh] overflow-y-auto">
@@ -56,16 +58,22 @@ export function renderSyncModal(onClose) {
             </button>
           </div>
 
-          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-750/50 border border-slate-200/60 dark:border-slate-700 text-xs space-y-2">
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-750/50 border border-slate-200/60 dark:border-slate-700 text-xs space-y-3">
             <div class="font-bold text-slate-700 dark:text-slate-300 flex items-center justify-between">
-              <span>📱 手机快速同步免输指南：</span>
-              <button id="copy-sync-code-btn" class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold hover:underline">
-                复制快速同步串码
+              <span>📱 手机免输自动配对</span>
+              <button id="copy-sync-link-btn" class="px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold shadow-sm transition-all">
+                📋 复制一键直连网址
               </button>
             </div>
-            <p class="text-[11px] text-slate-500 leading-relaxed">
-              在电脑端点击上方“复制”，将串码发给微信/QQ并在手机网页中粘贴，手机即可1秒连上同一私密云库，无需在手机键盘手打Token。
-            </p>
+            
+            <div class="flex items-center space-x-3 bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-slate-200/50 dark:border-slate-700/50">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(pairUrl)}" alt="手机扫码直达" class="w-20 h-20 rounded-lg border border-slate-200 shadow-sm shrink-0" />
+              <div class="text-[11px] text-slate-500 leading-relaxed space-y-1">
+                <p class="font-semibold text-slate-700 dark:text-slate-200">方式 A：手机相机/微信扫码</p>
+                <p>直接扫码打开，手机自动激活同步并抹去密钥，零输入即刻互通！</p>
+                <p class="pt-0.5"><a href="javascript:void(0)" id="copy-sync-code-btn" class="text-blue-600 dark:text-blue-400 hover:underline">方式 B：点击复制原始串码手动导入</a></p>
+              </div>
+            </div>
           </div>
 
           <div class="pt-2 flex justify-between items-center border-t border-slate-100 dark:border-slate-700">
@@ -155,6 +163,15 @@ export function renderSyncModal(onClose) {
         alert("连接失败：" + e.message);
         renderContent();
       }
+    });
+
+    // 复制手机一键免输直连网址
+    overlay.querySelector("#copy-sync-link-btn")?.addEventListener("click", () => {
+      const code = btoa(JSON.stringify(syncService.config));
+      const pairUrl = `${window.location.origin}${window.location.pathname}#sync=${encodeURIComponent(code)}`;
+      navigator.clipboard?.writeText(pairUrl).then(() => {
+        alert("✅ 一键直连网址已复制到剪贴板！发送给微信/QQ并在手机打开，即可自动完成配对。");
+      });
     });
 
     // 复制快速同步串码
