@@ -23,7 +23,10 @@ export function renderOverviewContainer(onNavigate) {
   };
 
   tasks.forEach((t) => {
-    const tr = trackStats[t.track] || trackStats.routine;
+    let cat = t.category || "routine";
+    if (cat === "sport") cat = "exercise";
+    if (cat === "habit") cat = "routine";
+    const tr = trackStats[cat] || trackStats.routine;
     tr.total += 1;
     if (t.completed) tr.done += 1;
   });

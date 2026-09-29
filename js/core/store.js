@@ -99,6 +99,11 @@ class Store {
     this.emit("tasksChanged", this.getTasksForSelectedDate());
   }
 
+  getTasksForDate(dateKey) {
+    this.ensureDateTasks(dateKey);
+    return this.tasksByDate[dateKey] || [];
+  }
+
   getTasksForSelectedDate() {
     this.ensureDateTasks(this.selectedDate);
     return this.tasksByDate[this.selectedDate] || [];
