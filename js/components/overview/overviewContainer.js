@@ -1,6 +1,6 @@
 // 全域计划归类与总览中枢容器 (Master Planning Overview & Domain Portals)
 import { store } from "../../core/store.js";
-import { getTodayKey, getTodayDisplay } from "../../core/utils.js";
+import { getTodayKey, getTodayDisplay } from "../../core/utils.js?v=2";
 import { PLANS_REGISTRY, TOOLS_REGISTRY } from "../../data/registry.js";
 
 export function renderOverviewContainer(onNavigate) {
