@@ -15,7 +15,7 @@ export function renderFitnessPlanView() {
             <span class="text-xl">🏆</span>
             <div>
               <h3 class="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100">
-                研究生“健身 + 跑步 + 羽毛球”每周黄金统筹课表
+                “力量 + 跑步 + 羽毛球”每周黄金统筹课表
               </h3>
               <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 2次抗阻健身（护肩固膝）+ 2次低心率跑（刷脂蓄能）+ 1~2次羽毛球（释放热爱）。

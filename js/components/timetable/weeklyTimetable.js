@@ -62,7 +62,7 @@ export function renderWeeklyTimetable(onSelectCell) {
           <div>
             <div class="flex items-center space-x-2">
               <span class="text-lg sm:text-xl">📅</span>
-              <h2 class="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100">研究生每周健康大课表</h2>
+              <h2 class="text-sm sm:text-base font-bold text-slate-800 dark:text-slate-100">每周全域自律与执行大课表</h2>
               <span class="text-[10px] px-2 py-0.5 rounded-full font-bold bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-300">
                 今日：${currentWeekday}
               </span>

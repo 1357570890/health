@@ -29,15 +29,15 @@ export function renderDailyContainer() {
         <div class="flex flex-wrap items-center justify-between gap-4">
           <div>
             <div class="flex items-center space-x-2 text-xs text-indigo-300 font-semibold mb-1">
-              <span>🔬 实验室工位自律模式</span>
+              <span>💻 工位深度自律模式</span>
               <span>•</span>
               <span class="px-2 py-0.5 rounded-full bg-white/10 backdrop-blur-sm text-[10px]">
                 ${isToday ? "今日实时执行" : "历史履历复盘"}
               </span>
             </div>
-            <h2 class="text-xl sm:text-2xl font-black">全天健康与科研行动工作台</h2>
+            <h2 class="text-xl sm:text-2xl font-black">全天生活健康与行动工作台</h2>
             <p class="text-xs text-slate-300 mt-0.5">
-              饮食营养、体能球类、科研攻坚独立分轨，基准习惯自动注入，常用任务一秒直达。
+              饮食营养、体能运动、重点攻坚独立分轨，基准习惯自动注入，常用任务一秒直达。
             </p>
           </div>
 

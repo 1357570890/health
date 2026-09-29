@@ -172,7 +172,7 @@ export function renderTrackerTool() {
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center space-x-2">
           <span class="text-xl">💊</span>
-          <h3 class="font-bold text-slate-800 dark:text-slate-100">研究生基础补剂打卡</h3>
+          <h3 class="font-bold text-slate-800 dark:text-slate-100">基础核心补剂打卡</h3>
         </div>
         <span class="text-xs text-slate-400">抗炎、护眼与深睡眠</span>
       </div>

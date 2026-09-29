@@ -53,7 +53,7 @@ export function renderBackupTool() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `研途健康数据备份_${getTodayDisplay().split(" ")[0]}.json`;
+    a.download = `全域规划自律数据备份_${getTodayDisplay().split(" ")[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
   });

@@ -45,14 +45,14 @@ export function getTimetableCell(dayName, slotId) {
     };
   }
 
-  // 3. 上午科研深度工作
+  // 3. 上午深度专注工作
   if (slotId === "slot_0830") {
     return {
       type: "research",
       badge: "高能脑力区",
-      title: "高认知开销科研（推导/难点）",
-      brief: "专注论文核心章节、算法架构与公式推导",
-      details: "全天皮质醇与警觉度处于峰值，攻坚最艰深、最抗拒的科研硬骨头。",
+      title: "高认知开销深度攻坚（难点/核心业务）",
+      brief: "专注核心模块、技术架构设计与算法逻辑推导",
+      details: "全天皮质醇与警觉度处于峰值，攻坚全天最艰深、最重要的业务硬骨头。",
       tips: "关闭即时通讯群弹窗，开启45分钟工位番茄钟专注。"
     };
   }
@@ -75,8 +75,8 @@ export function getTimetableCell(dayName, slotId) {
     return {
       type: "research",
       badge: "深度产出",
-      title: "实验方案细化与文献研读",
-      brief: "细化技术路线与实验参数设计，饮水250ml",
+      title: "方案细化与重点事项推进",
+      brief: "细化技术路线与执行步骤设计，饮水250ml",
       details: "保持沉浸，临近午餐前小口补水增强饱腹感。",
       tips: "工位端坐，坐骨受力，避免身体斜瘫在转椅上。"
     };
@@ -121,10 +121,10 @@ export function getTimetableCell(dayName, slotId) {
   if (slotId === "slot_1330") {
     return {
       type: "research",
-      badge: "代码/实验",
-      title: "下午连续实操区（调试/跑数）",
-      brief: "代码编写调试、数据清洗、仪器测量测试",
-      details: "适合流程确定性高、需要连续操作的事务性学术工作。",
+      badge: "连续实操",
+      title: "下午连续实操区（系统编码/业务推进）",
+      brief: "系统代码调试、数据清洗分析、核心业务流程落地",
+      details: "适合流程确定性高、需要连续专注操作的实操工作。",
       tips: "每45分钟起身接水一次（目标350ml），防下肢血流淤滞。"
     };
   }
@@ -149,8 +149,8 @@ export function getTimetableCell(dayName, slotId) {
         badge: "轻断食排水肿",
         title: "周日晚特调：轻断食排水肿",
         brief: "水果黄瓜1根 + 水浸金枪鱼1罐 + 多喝清水",
-        details: "排出中午放纵餐摄入的多余钠盐，周一清爽无水肿进实验室。",
-        tips: "20:30后只饮白开水，早点洗漱准备下周组会。"
+        details: "排出中午放纵餐摄入的多余钠盐，周一清爽无水肿开启新一周。",
+        tips: "20:30后只饮白开水，早点洗漱准备下周核心日程。"
       };
     }
     return {
@@ -218,7 +218,7 @@ export function getTimetableCell(dayName, slotId) {
           badge: "羽球实战",
           title: "高校球馆羽毛球对抗90分钟（高燃暴汗）",
           brief: "7分钟动态热身 + 20分钟拉开 + 60分钟战术比赛",
-          details: "高强度间歇，全面释放科研压力，享受与球友竞技快感。",
+          details: "高强度间歇，全面释放脑力压力，享受与球友竞技快感。",
           tips: "必须穿专业生胶底羽球鞋（严禁跑鞋防崴脚）；打完换干衣服。"
         };
       case "周日":
@@ -227,21 +227,21 @@ export function getTimetableCell(dayName, slotId) {
           badge: "羽球/主动恢复",
           title: "羽球切磋 或 户外漫游排酸（身心重启）",
           brief: "方案A：约球打双打60~90分钟；方案B：户外漫游排酸",
-          details: "彻底放下文献与代码，沐浴阳光合成维生素D，身心重启。",
+          details: "彻底放下工作与屏幕，沐浴阳光合成维生素D，身心重启。",
           tips: "享受微风与阳光，不追求心率配速指标。"
         };
     }
   }
 
-  // 12. 文献收尾
+  // 12. 闭环梳理
   if (slotId === "slot_2030") {
     return {
-      type: "research",
+      type: "work",
       badge: "闭环梳理",
-      title: "文献阅读与明日待办清单 (To-do)",
-      brief: "梳理明日实验步骤，列出3项核心任务，21:00后禁固体食物",
-      details: "将悬而未决的事项写在纸上，防止睡前大脑反复盘旋引起失眠焦虑。",
-      tips: "离开实验室回宿舍，彻底与实验台脱钩。"
+      title: "工作复盘与明日待办清单 (To-do)",
+      brief: "梳理明日重点推进事项，列出3项核心攻坚任务，21:00后禁固体食物",
+      details: "将悬而未决的事项写在纸上或任务清单，防止睡前大脑反复盘旋引起失眠焦虑。",
+      tips: "结束晚间工作，彻底与工作台脱钩，回归生活与休息。"
     };
   }
 

@@ -3,7 +3,7 @@
 
 export const PLAN_CATEGORIES = [
   { id: "all", label: "全部全域计划" },
-  { id: "research", label: "学术与科研" },
+  { id: "research", label: "事业与攻坚" },
   { id: "nutrition", label: "饮食与营养" },
   { id: "body", label: "体能与羽球" },
   { id: "routine", label: "工位与作息" },
@@ -14,10 +14,10 @@ export const PLANS_REGISTRY = [
   {
     id: "research_plan",
     category: "research",
-    title: "研究生学术攻坚与工位节奏规程",
-    icon: "🧪",
-    badge: "学业核心",
-    summary: "工位坐班类工作制节奏、文献精读、实验推进与组会汇报全周期规划。"
+    title: "工位深度工作与重点攻坚规程",
+    icon: "💼",
+    badge: "事业核心",
+    summary: "工位专注节奏、深度研读、业务推进与关键汇报全周期闭环。"
   },
   {
     id: "diet_plan",
@@ -25,12 +25,12 @@ export const PLANS_REGISTRY = [
     title: "控糖减脂饮食总方案",
     icon: "🥗",
     badge: "健康基石",
-    summary: "四餐定时定量、1:1自由替换与高校食堂生存避坑全手册。"
+    summary: "四餐定时定量、1:1自由替换与外食食堂生存避坑全手册。"
   },
   {
     id: "supplement_plan",
     category: "nutrition",
-    title: "研究生微量营养与补剂方案",
+    title: "工位脑力与微量补剂方案",
     icon: "💊",
     badge: "对症抗衰",
     summary: "针对室内不见阳光、长时用脑用眼的维生素D3/鱼油/镁补充指引。"
@@ -39,9 +39,9 @@ export const PLANS_REGISTRY = [
     id: "fitness_plan",
     category: "body",
     title: "极简3+2每周体能课表",
-    icon: "🏃‍♂️",
+    icon: "🏸",
     badge: "精力充沛",
-    summary: "适合科研节奏的3次抗阻力量+2次操场有氧，不力竭重在恢复。"
+    summary: "适合专注工作节奏的3次抗阻力量+2次操场慢跑+周末羽球，不力竭重在恢复。"
   },
   {
     id: "posture_plan",
@@ -54,10 +54,10 @@ export const PLANS_REGISTRY = [
   {
     id: "circadian_plan",
     category: "sleep",
-    title: "科研作息与90分钟睡眠节律",
+    title: "高效作息与90分钟睡眠节律",
     icon: "🌙",
     badge: "深度修复",
-    summary: "锚定晨光昼夜节律、宿舍降噪遮光与7.5小时完整周期睡眠。"
+    summary: "锚定晨光昼夜节律、降噪遮光与7.5小时完整周期睡眠。"
   },
   {
     id: "mental_plan",

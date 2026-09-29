@@ -18,7 +18,7 @@ export function renderOverviewContainer(onNavigate) {
 
   // 五大细分领域统计
   const trackStats = {
-    research: { label: "学术科研", total: 0, done: 0, tagClass: "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800" },
+    research: { label: "深度攻坚", total: 0, done: 0, tagClass: "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800" },
     diet: { label: "营养饮食", total: 0, done: 0, tagClass: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800" },
     exercise: { label: "体能羽球", total: 0, done: 0, tagClass: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800" },
     growth: { label: "个人提升", total: 0, done: 0, tagClass: "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800" },
@@ -42,9 +42,9 @@ export function renderOverviewContainer(onNavigate) {
   const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
   const dayName = weekdays[now.getDay()];
 
-  let adviceTitle = "工位专注科研推进";
+  let adviceTitle = "深度专注工作攻坚";
   let adviceDesc = "开启45分钟无干扰专注块，坐姿挺直，分段小口补水。";
-  let adviceTag = "科研专注";
+  let adviceTag = "深度专注";
   let targetSlotId = "slot_0830";
 
   if (timeVal >= 7.0 && timeVal < 8.5) {
@@ -53,9 +53,9 @@ export function renderOverviewContainer(onNavigate) {
     adviceTag = "营养早餐";
     targetSlotId = "slot_0730";
   } else if (timeVal >= 8.5 && timeVal < 10.0) {
-    adviceTitle = "上午高难度科研攻坚";
-    adviceDesc = "皮质醇与警觉度峰值区：攻坚算法难点与公式推导，关闭社交弹窗，专注45分钟番茄钟。";
-    adviceTag = "学术攻坚";
+    adviceTitle = "上午高认知深度攻坚";
+    adviceDesc = "皮质醇与警觉度峰值区：攻坚业务难点与关键架构，关闭社交弹窗，专注45分钟番茄钟。";
+    adviceTag = "深度攻坚";
     targetSlotId = "slot_0830";
   } else if (timeVal >= 10.0 && timeVal < 10.5) {
     adviceTitle = "上午坚果加餐与工位微伸展";
@@ -63,9 +63,9 @@ export function renderOverviewContainer(onNavigate) {
     adviceTag = "能量加餐";
     targetSlotId = "slot_1000";
   } else if (timeVal >= 10.5 && timeVal < 11.5) {
-    adviceTitle = "实验细化与导师沟通准备";
+    adviceTitle = "重点事项攻坚与汇报准备";
     adviceDesc = "事实与情绪解耦，提问题务必自带2个具体备选方案。临近午餐补水250ml。";
-    adviceTag = "科研推进";
+    adviceTag = "关键推进";
     targetSlotId = "slot_1030";
   } else if (timeVal >= 11.5 && timeVal < 12.75) {
     adviceTitle = "食堂午餐战术执行";
@@ -102,19 +102,19 @@ export function renderOverviewContainer(onNavigate) {
       adviceDesc = "Zone 2心率慢跑，步频180，全脚掌滚动着地。微喘能交谈，跑后小口补水做小腿拉伸。";
       adviceTag = "慢跑心肺";
     } else if (dayName === "周六") {
-      adviceTitle = `今日实战：高校球馆羽毛球对抗 (${profile.exercise?.badmintonDuration || "90分钟"})`;
-      adviceDesc = "穿专业生胶底羽球鞋（严禁跑鞋防崴脚）！打前动态热身7分钟，高燃对局彻底释放学术压力。";
+      adviceTitle = `今日实战：球馆羽毛球对抗 (${profile.exercise?.badmintonDuration || "90分钟"})`;
+      adviceDesc = "穿专业生胶底羽球鞋（严禁跑鞋防崴脚）！打前动态热身7分钟，高燃对局彻底释放工作与脑力压力。";
       adviceTag = "羽球实战";
     } else {
       adviceTitle = "周日身心重启与主动排酸";
-      adviceDesc = "羽毛球切磋或公园阳光漫游，享受微风与阳光，彻底放下文献与代码，重置身心状态。";
+      adviceDesc = "羽毛球切磋或公园阳光漫游，享受微风与阳光，彻底放下工作与屏幕，重置身心状态。";
       adviceTag = "主动恢复";
     }
     targetSlotId = "slot_1900";
   } else if (timeVal >= 20.75 && timeVal < 22.5) {
-    adviceTitle = "晚间复盘与学术表达积累";
-    adviceDesc = "学术英文表达积累10条、梳理明日实验待办3项。20:30后禁止摄入固体食物。";
-    adviceTag = "学术复盘";
+    adviceTitle = "晚间复盘与知识复利积累";
+    adviceDesc = "关键知识/地道表达积累、梳理明日核心待办3项。20:30后禁止摄入固体食物。";
+    adviceTag = "晚间复盘";
     targetSlotId = "slot_2030";
   } else if (timeVal >= 22.5 && timeVal < 23.5) {
     adviceTitle = "睡前降温与褪黑素节律保护";
@@ -135,7 +135,7 @@ export function renderOverviewContainer(onNavigate) {
         <div class="space-y-1">
           <div class="flex items-center space-x-2">
             <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200">
-              ${profile.stage || "在读研究生 · 工位坐班模式"}
+              ${profile.stage || "专注工作与工位自律模式"}
             </span>
             <span class="text-xs text-slate-400 font-mono">${getTodayDisplay()}</span>
           </div>
@@ -143,7 +143,7 @@ export function renderOverviewContainer(onNavigate) {
             今日全域规划与工位执行
           </h2>
           <p class="text-xs text-slate-500 dark:text-slate-400">
-            学术科研 · 控糖减脂 · 3+2体能与羽球 · 身心作息一体化管理
+            深度工作 · 科学控糖 · 3+2体能与羽球 · 身心作息一体化管理
           </p>
         </div>
 
@@ -230,27 +230,27 @@ export function renderOverviewContainer(onNavigate) {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- 专区 1：学术科研与实验室攻坚 -->
+        <!-- 专区 1：深度工作与重点攻坚 -->
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/90 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 transition-all flex flex-col justify-between space-y-4 shadow-sm">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-semibold px-2 py-0.5 rounded-md border ${trackStats.research.tagClass}">
-                学术科研
+                深度攻坚
               </span>
               <span class="text-xs text-slate-400 font-medium">
                 ${trackStats.research.done}/${trackStats.research.total} 已完成
               </span>
             </div>
             <h4 class="text-sm font-bold text-slate-900 dark:text-white">
-              实验室工位科研攻坚
+              深度工作与工位重点攻坚
             </h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              工位坐班模式、代码实验推进、顶会论文精读、大论文撰写与组会汇报备忘。
+              工位专注自律、核心业务推进、前沿文献与技术研读、关键汇报与复盘备忘。
             </p>
           </div>
           <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
             <button data-action="plan" data-sub="research_plan" class="text-slate-900 dark:text-slate-100 font-semibold hover:underline">
-              查看科研规程 →
+              查看攻坚规程 →
             </button>
             <button data-action="daily-filter" data-track="research" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-700 font-medium text-slate-700 dark:text-slate-200">
               今日待办

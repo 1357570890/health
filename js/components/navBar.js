@@ -48,14 +48,14 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
           <!-- 品牌标识 -->
           <div class="flex items-center space-x-2.5 cursor-pointer shrink-0" id="brand-logo">
             <div class="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-bold text-xs tracking-wider shadow-sm">
-              GP
+              LP
             </div>
             <div>
               <div class="flex items-center space-x-1.5">
-                <h1 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">GradPlan</h1>
-                <span class="text-[10px] px-1.5 py-0.2 rounded font-medium bg-slate-100 dark:bg-slate-800 text-slate-500">研途规划</span>
+                <h1 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">LifePlan</h1>
+                <span class="text-[10px] px-1.5 py-0.2 rounded font-medium bg-slate-100 dark:bg-slate-800 text-slate-500">全域规划</span>
               </div>
-              <p class="text-[10px] text-slate-400 dark:text-slate-500">研究生全域计划与自律中枢</p>
+              <p class="text-[10px] text-slate-400 dark:text-slate-500">个人终身生活与自律执行中枢</p>
             </div>
           </div>
 

@@ -1,6 +1,6 @@
 {
-  "name": "研途全域规划中枢",
-  "short_name": "研途规划",
+  "name": "全域规划自律中枢",
+  "short_name": "全域规划",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
@@ -8,7 +8,7 @@
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%236366f1'/><text x='50' y='68' font-size='60' text-anchor='middle'>🧭</text></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%230f172a'/><text x='50' y='65' font-size='50' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'>LP</text></svg>",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml"
     }

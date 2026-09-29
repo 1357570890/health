@@ -101,7 +101,7 @@ class SyncService {
       }
 
       const gist = await resp.json();
-      const file = gist.files["grad_health_hub_data.json"];
+      const file = gist.files["lifeplan_hub_data.json"] || gist.files["grad_health_hub_data.json"];
       if (!file || !file.content) {
         throw new Error("云端数据文件不存在");
       }
@@ -134,8 +134,11 @@ class SyncService {
     try {
       const jsonContent = store.exportDataJson();
       const payload = {
-        description: "研途生活健康中枢 - 跨端自律数据同步 (Private Gist)",
+        description: "LifePlan 全域规划中枢 - 跨端自律数据同步 (Private Gist)",
         files: {
+          "lifeplan_hub_data.json": {
+            content: jsonContent
+          },
           "grad_health_hub_data.json": {
             content: jsonContent
           }
@@ -175,9 +178,12 @@ class SyncService {
 
     const jsonContent = store.exportDataJson();
     const payload = {
-      description: "研途生活健康中枢 - 个人专属跨端私密存储库",
+      description: "LifePlan 全域规划中枢 - 个人专属跨端私密存储库",
       public: false, // 保证100%私密，外人不可见
       files: {
+        "lifeplan_hub_data.json": {
+          content: jsonContent
+        },
         "grad_health_hub_data.json": {
           content: jsonContent
         }

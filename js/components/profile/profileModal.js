@@ -25,10 +25,10 @@ export function renderProfileModal() {
       </div>
 
       <form id="profile-form" class="space-y-4 text-xs">
-        <!-- 身份阶段 -->
+        <!-- 身份状态与自律模式 -->
         <div class="space-y-1.5">
-          <label class="block font-semibold text-slate-700 dark:text-slate-300">当前身份状态</label>
-          <input type="text" id="prof-stage" value="${profile.stage || "在读研究生（工位坐班模式·无课程）"}" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
+          <label class="block font-semibold text-slate-700 dark:text-slate-300">当前日常状态 / 目标画像</label>
+          <input type="text" id="prof-stage" value="${profile.stage || "专注工作与工位自律模式"}" placeholder="如：专注工作与工位自律模式" class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-slate-900 dark:focus:ring-white">
         </div>
 
         <!-- 饮食配置 -->

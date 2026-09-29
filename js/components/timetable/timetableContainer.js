@@ -14,10 +14,10 @@ export function renderTimetableContainer() {
       <!-- 模式切换控制器 -->
       <div class="flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-slate-900 to-slate-800 p-4 rounded-3xl text-white shadow-lg">
         <div class="flex items-center space-x-3">
-          <span class="text-2xl">🎓</span>
+          <span class="text-2xl">🗓️</span>
           <div>
-            <h2 class="text-base sm:text-lg font-bold">高校研究生生活健康大课表</h2>
-            <p class="text-xs text-slate-300">把科研、三餐、跑步羽毛球与睡眠像课表一样排布，随时随地知道何时该干啥</p>
+            <h2 class="text-base sm:text-lg font-bold">全域生活自律与执行总览大课表</h2>
+            <p class="text-xs text-slate-300">把工作攻坚、三餐营养、运动健身与睡眠像大课表一样排布，清晰掌控节奏</p>
           </div>
         </div>
 

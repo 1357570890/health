@@ -20,11 +20,11 @@ export function renderPlanContainer(currentPlanId = "diet_plan", onSelectPlan) {
         <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-sm">
           📋 核心健康计划库（知识与行动规范）
         </span>
-        <span class="text-xs text-emerald-100">专为在读研究生高压长久坐环境定制</span>
+        <span class="text-xs text-emerald-100">专为高脑力长久坐专注环境量身定制</span>
       </div>
       <h2 class="text-xl sm:text-2xl font-black tracking-tight mt-1">系统化健康方案与执行规程</h2>
       <p class="text-xs sm:text-sm text-emerald-100 mt-1.5 max-w-2xl leading-relaxed">
-        健康不是零碎的应付，而是严密的科研工程。本板块汇集您生活各维度的确定性方案、1:1替换库与避坑红线，以规划为纲，照章执行。
+        健康不是零碎的应付，而是严密的生命工程。本板块汇集您生活各维度的确定性方案、1:1替换库与避坑红线，以规划为纲，照章执行。
       </p>
 
       <!-- 计划横向切换标签栏 -->
@@ -93,7 +93,7 @@ function renderResearchPlanContent() {
       <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
         <div class="flex items-center space-x-2 border-b border-slate-100 dark:border-slate-700 pb-3">
           <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
-          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">实验室工位坐班作息法则（类上班工作制）</h3>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">工位坐班作息法则（深度专注与节奏工作制）</h3>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
           <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-750 border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
@@ -169,7 +169,7 @@ function renderDietPlanContent() {
                   </div>
                 </div>
               `).join("")}
-              ${plan.gradTips ? `<div class="p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/70 dark:border-blue-900/40 text-xs text-blue-800 dark:text-blue-300">💡 研途实操技巧：${plan.gradTips}</div>` : ""}
+              ${plan.gradTips ? `<div class="p-2.5 rounded-xl bg-blue-50/70 dark:bg-blue-950/30 border border-blue-200/70 dark:border-blue-900/40 text-xs text-blue-800 dark:text-blue-300">💡 实操落地技巧：${plan.gradTips}</div>` : ""}
             </div>
 
             <div class="space-y-2.5">
@@ -199,7 +199,7 @@ function renderDietPlanContent() {
 
       <!-- 食堂红黑榜 -->
       <div class="p-5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm">
-        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3">🏫 高校食堂点餐避坑红黑榜</h4>
+        <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100 mb-3">🍱 食堂与外卖点餐避坑红黑榜</h4>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
           <div class="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40">
             <span class="font-bold text-emerald-800 dark:text-emerald-300 block mb-1">✅ 绿榜（放心打菜）：</span>
@@ -266,7 +266,7 @@ function renderPosturePlanContent() {
 function renderCircadianPlanContent() {
   return `
     <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
-      <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">🌙 研究生 24小时科研精力节奏轴</h4>
+      <h4 class="text-sm font-bold text-slate-800 dark:text-slate-100">🌙 24小时高能精力与作息节奏轴</h4>
       <div class="space-y-2.5">
         ${DAILY_ROUTINE_TIMELINE.map((r) => `
           <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-750/30 border border-slate-200/60 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-2">

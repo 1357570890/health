@@ -25,15 +25,15 @@ export function renderTrackModulesView() {
     },
     {
       id: "research",
-      name: "实验室科研攻坚",
-      badge: "学术主线",
-      desc: "模型代码调试、实验数据清洗与论文攻坚"
+      name: "深度工作与攻坚",
+      badge: "核心产出",
+      desc: "核心业务攻坚、系统代码调试、深度研读与方案推进"
     },
     {
       id: "growth",
       name: "技能提升进阶",
       badge: "长远复利",
-      desc: "学术英文句式积累、工程技术沉淀与复盘"
+      desc: "专业技能拓展、高价值地道表达积累与体系复盘"
     },
     {
       id: "habit",
