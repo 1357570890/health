@@ -1,14 +1,16 @@
 // 全域计划归类与总览中枢容器 (Master Planning Overview & Domain Portals)
-import { store } from "../../core/store.js";
-import { getTodayKey, getTodayDisplay } from "../../core/utils.js?v=2";
-import { PLANS_REGISTRY, TOOLS_REGISTRY } from "../../data/registry.js";
+import { store } from "../../core/store.js?v=3";
+import { getTodayKey, getTodayDisplay } from "../../core/utils.js?v=3";
+import { PLANS_REGISTRY, TOOLS_REGISTRY } from "../../data/registry.js?v=3";
 
 export function renderOverviewContainer(onNavigate) {
   const container = document.createElement("div");
   container.className = "space-y-6 sm:space-y-8 animate-in fade-in duration-200";
 
   const todayStr = getTodayKey();
-  const tasks = store.getTasksForDate(todayStr);
+  const tasks = typeof store.getTasksForDate === "function"
+    ? store.getTasksForDate(todayStr)
+    : (typeof store.getTasksForToday === "function" ? store.getTasksForToday() : (store.getTasksForSelectedDate ? store.getTasksForSelectedDate() : []));
   const totalCount = tasks.length;
   const doneCount = tasks.filter((t) => t.completed).length;
   const percent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;

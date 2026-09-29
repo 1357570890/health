@@ -1,5 +1,5 @@
 import { renderNavBar } from "./components/navBar.js";
-import { renderOverviewContainer } from "./components/overview/overviewContainer.js?v=2";
+import { renderOverviewContainer } from "./components/overview/overviewContainer.js?v=3";
 import { renderDailyContainer } from "./components/daily/dailyContainer.js";
 import { renderTimetableContainer } from "./components/timetable/timetableContainer.js";
 import { renderPlanContainer } from "./components/plans/planContainer.js";
