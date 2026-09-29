@@ -37,10 +37,8 @@ class App {
           // 清除 URL hash 防止留在浏览器历史记录
           history.replaceState(null, "", window.location.pathname + window.location.search);
           await syncService.pullFromCloud();
+          this.render(); // 重新渲染导航栏展示已同步状态
           playGentleChime(659.25, 0.2);
-          setTimeout(() => {
-            alert("🎉 恭喜！跨端云同步已自动完成配对与初次拉取！");
-          }, 200);
         }
       }
     } catch (e) {
@@ -124,7 +122,9 @@ class App {
   }
 }
 
-// 页面加载完成后挂载运行
-document.addEventListener("DOMContentLoaded", () => {
+// 页面就绪后自适应启动
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => new App());
+} else {
   new App();
-});
+}
