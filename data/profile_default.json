@@ -1,0 +1,22 @@
+{
+  "stage": "专注工作与工位自律模式",
+  "diet": {
+    "breakfast": "全黑麦面包2片 + 纯牛奶250ml + 水煮蛋2个",
+    "lunchProtein": "即食鸡胸肉100g",
+    "dinner": "蒸红薯150g + 即食鸡胸肉100g + 黄瓜1根",
+    "coffeeCutoff": "15:00",
+    "fastingCutoff": "20:30"
+  },
+  "exercise": {
+    "strengthDays": ["周一", "周三", "周五"],
+    "runDays": ["周二", "周四"],
+    "runDistanceKm": "4公里",
+    "badmintonDays": ["周六", "周日"],
+    "badmintonDuration": "90分钟"
+  },
+  "routine": {
+    "waterDaily": "2000ml (8杯)",
+    "sleepTarget": "23:30 (5个周期)",
+    "deskStretchIntervalMin": 45
+  }
+}

@@ -1,0 +1,12 @@
+[
+  { "id": "preset_chicken", "title": "开一包自带高蛋白（即食鸡胸肉100g/酱牛肉70g）", "time": "午餐/晚餐", "category": "diet", "badge": "优质蛋白", "details": "满足每餐25~30g蛋白，先菜肉后米饭" },
+  { "id": "preset_coffee", "title": "午后黑咖啡1杯（200~250ml，15:00前截止锁死）", "time": "13:30~15:00", "category": "diet", "badge": "黑咖啡", "details": "提升下午工位专注度，过15:00严禁饮用" },
+  { "id": "preset_desk_stretch", "title": "工位颈椎下颌微回缩与门框扩胸拉伸", "time": "每45分钟", "category": "habit", "badge": "工位微动", "details": "下颌回缩10次+门框拉伸30秒+接水250ml" },
+  { "id": "preset_run", "title": "操场低心率慢跑4公里（Zone 2，步频180）", "time": "19:00~19:40", "category": "sport", "badge": "跑步心肺", "details": "微喘能对话，步频180，全脚掌滚动着地" },
+  { "id": "preset_badminton", "title": "球馆羽毛球实战对抗90分钟", "time": "19:00~20:30", "category": "sport", "badge": "羽球高燃", "details": "穿专业生胶底羽球鞋，动态热身7分钟防崴脚" },
+  { "id": "preset_strength", "title": "力量抗阻：俯卧撑+划船+面拉护肩袖4组", "time": "19:00~19:45", "category": "sport", "badge": "力量抗阻", "details": "面拉强效保护肩袖小圆肌，核心抗旋转" },
+  { "id": "preset_paper_read", "title": "深度文献与前沿技术精读笔记", "time": "14:00~15:30", "category": "research", "badge": "深度研读", "details": "拆解创新点、架构设计与对比实验" },
+  { "id": "preset_code_debug", "title": "核心系统代码调试与业务实操攻坚", "time": "09:00~11:30", "category": "research", "badge": "核心实操", "details": "关闭无关弹窗，专注45分钟工位专注块" },
+  { "id": "preset_meeting", "title": "关键汇报沟通（提问题自带2个备选方案）", "time": "15:00~16:30", "category": "research", "badge": "关键汇报", "details": "事实与情绪解耦，提炼关键讨论点" },
+  { "id": "preset_sleep", "title": "睡前4-7-8呼吸法3组与23:30熄灯入眠", "time": "23:00~23:30", "category": "habit", "badge": "睡眠节律", "details": "锁定5个完整90分钟睡眠周期，远离蓝光" }
+]

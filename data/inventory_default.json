@@ -1,0 +1,92 @@
+[
+  {
+    "id": "inv_egg",
+    "name": "水煮蛋 / 鲜鸡蛋",
+    "category": "优质蛋白",
+    "stock": 12,
+    "unit": "个",
+    "threshold": 4,
+    "dailyUsage": 2,
+    "icon": "🥚"
+  },
+  {
+    "id": "inv_bread",
+    "name": "全黑麦面包 / 谷物切片",
+    "category": "健康主食",
+    "stock": 8,
+    "unit": "片",
+    "threshold": 3,
+    "dailyUsage": 2,
+    "icon": "🍞"
+  },
+  {
+    "id": "inv_milk",
+    "name": "低脂纯牛奶 (250ml)",
+    "category": "乳品饮品",
+    "stock": 6,
+    "unit": "盒",
+    "threshold": 3,
+    "dailyUsage": 1,
+    "icon": "🥛"
+  },
+  {
+    "id": "inv_chicken",
+    "name": "即食鸡胸肉 (100g)",
+    "category": "优质蛋白",
+    "stock": 7,
+    "unit": "袋",
+    "threshold": 2,
+    "dailyUsage": 1,
+    "icon": "🍗"
+  },
+  {
+    "id": "inv_cucumber",
+    "name": "生脆黄瓜 / 鲜果蔬",
+    "category": "轻食果蔬",
+    "stock": 4,
+    "unit": "根",
+    "threshold": 2,
+    "dailyUsage": 1,
+    "icon": "🥒"
+  },
+  {
+    "id": "inv_coffee",
+    "name": "纯黑咖啡 / 冻干条",
+    "category": "工位补给",
+    "stock": 15,
+    "unit": "条",
+    "threshold": 5,
+    "dailyUsage": 1,
+    "icon": "☕"
+  },
+  {
+    "id": "inv_vit_d3",
+    "name": "维生素D3 (1000~2000IU)",
+    "category": "核心补剂",
+    "stock": 40,
+    "unit": "粒",
+    "threshold": 10,
+    "dailyUsage": 1,
+    "icon": "💊"
+  },
+  {
+    "id": "inv_fish_oil",
+    "name": "高纯Omega-3深海鱼油",
+    "category": "核心补剂",
+    "stock": 35,
+    "unit": "粒",
+    "threshold": 10,
+    "dailyUsage": 1,
+    "icon": "🐟"
+  },
+  {
+    "id": "inv_magnesium",
+    "name": "甘氨酸镁 (晚间安睡)",
+    "category": "核心补剂",
+    "stock": 25,
+    "unit": "粒",
+    "threshold": 7,
+    "dailyUsage": 1,
+    "icon": "🌙"
+  }
+]
