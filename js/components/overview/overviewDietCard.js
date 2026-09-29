@@ -6,16 +6,31 @@ import { renderDiningOutModal } from "../diet/diningOutModal.js";
 
 export function renderOverviewDietCard(onNavigate) {
   const container = document.createElement("div");
-  container.className = "bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-700/80 shadow-xs flex flex-col justify-between space-y-3 transition-all";
+  container.className = "bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-700/80 shadow-xs flex flex-col justify-between space-y-2.5 transition-all";
 
   const todayStr = getTodayKey();
   const tasks = store.getTasksForDate(todayStr);
   const dietTasks = tasks.filter((t) => t.category === "diet");
+  const profile = store.getUserProfile();
+  const targetProtein = profile.proteinTarget || 112;
+
+  // 动态测算今日已摄入纯蛋白质克数
+  let currentProtein = 0;
+  dietTasks.forEach((t) => {
+    if (t.completed) {
+      if (t.id === "fixed_diet_breakfast") currentProtein += 28;
+      else if (t.id === "fixed_diet_lunch") currentProtein += 35;
+      else if (t.id === "fixed_diet_dinner") currentProtein += 25;
+      else currentProtein += 5;
+    }
+  });
+  const proteinDiff = Math.max(0, targetProtein - currentProtein);
+  const proteinPercent = Math.min(100, Math.round((currentProtein / targetProtein) * 100));
 
   container.innerHTML = `
-    <div class="space-y-2.5">
+    <div class="space-y-2">
       <!-- 头部：标题与控糖标签 -->
-      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-2">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-1.5">
         <div class="flex items-center space-x-2">
           <span class="text-base sm:text-lg">🥗</span>
           <div>
@@ -29,6 +44,21 @@ export function renderOverviewDietCard(onNavigate) {
           <span class="text-[11px] text-slate-400 font-mono">
             ${dietTasks.filter((t) => t.completed).length}/${dietTasks.length} 完成
           </span>
+        </div>
+      </div>
+
+      <!-- 蛋白质宏量缺口透视微胶囊 -->
+      <div class="px-2.5 py-1 rounded-xl bg-slate-50 dark:bg-slate-750/50 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+        <div class="flex items-center space-x-1.5 truncate">
+          <span class="text-xs">🥩</span>
+          <span class="font-bold text-slate-700 dark:text-slate-300">纯蛋白达标:</span>
+          <span class="font-mono font-extrabold text-slate-900 dark:text-white">${currentProtein}g / ${targetProtein}g</span>
+          <span class="text-[10px] text-slate-400">
+            ${proteinDiff > 0 ? `(差${proteinDiff}g · 晚间建议补充鸡胸肉或蛋白粉)` : `(✨ 已圆满达标)`}
+          </span>
+        </div>
+        <div class="w-14 h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden shrink-0 ml-2">
+          <div class="h-full bg-emerald-500 rounded-full transition-all duration-300" style="width: ${proteinPercent}%;"></div>
         </div>
       </div>
 
@@ -88,7 +118,7 @@ export function renderOverviewDietCard(onNavigate) {
     </div>
 
     <!-- 底部直达链接 -->
-    <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+    <div class="pt-1.5 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
       <span class="text-slate-400">打卡自动扣除对应食材库存</span>
       <button id="diet-jump-plan-btn" class="font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center space-x-0.5">
         <span>四餐详细规程与外卖方案</span>

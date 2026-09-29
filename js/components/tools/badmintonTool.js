@@ -258,38 +258,53 @@ export function renderBadmintonTool() {
         </div>
       `;
 
-      // 增加沉淀至今日运动记录按钮
-      const existingBtn = container.querySelector("#save-badminton-to-today");
-      if (!existingBtn) {
-        const sinkBtn = document.createElement("button");
-        sinkBtn.id = "save-badminton-to-today";
-        sinkBtn.className = "w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center space-x-1.5 transition-all shadow-sm active:scale-95";
-        sinkBtn.innerHTML = `<span>📥 沉淀至今日打卡：羽毛球实战 (${durMin}分钟 · 消耗${calories}kcal)</span>`;
-        sinkBtn.addEventListener("click", () => {
+      // 增加临场技战术手记与沉淀按钮
+      const existingContainer = container.querySelector("#badminton-sink-box");
+      if (!existingContainer) {
+        const sinkBox = document.createElement("div");
+        sinkBox.id = "badminton-sink-box";
+        sinkBox.className = "space-y-2 pt-1";
+        sinkBox.innerHTML = `
+          <input
+            id="badminton-match-notes"
+            type="text"
+            placeholder="选填临场技战术或身体反馈 (如：反手抽压出界偏多 / 杀球后跟进快 / 护膝状态好)..."
+            class="w-full px-3 py-2 rounded-xl bg-slate-50 dark:bg-slate-750 border border-slate-200 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-900"
+          />
+          <button id="save-badminton-to-today" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center space-x-1.5 transition-all shadow-sm active:scale-95">
+            <span>📥 沉淀至今日打卡：羽毛球实战 (${durMin}分钟 · 消耗${calories}kcal)</span>
+          </button>
+        `;
+
+        sinkBox.querySelector("#save-badminton-to-today")?.addEventListener("click", () => {
+          const notes = sinkBox.querySelector("#badminton-match-notes")?.value?.trim();
           const todayKey = getTodayKey();
           store.ensureDateTasks(todayKey);
           const tasks = store.getTasksForDate(todayKey);
           const exTask = tasks.find((t) => t.category === "exercise" || t.id.includes("exercise"));
           const text = `羽毛球实战对抗 (${durMin}分钟 · 消耗${calories}kcal · 等效跑步${equivalentKm}km)`;
+          const detailStr = `出汗约${sweatMl}ml · ${avgBpm}${notes ? ` · 手记：${notes}` : ""}`;
+
           if (exTask) {
             store.updateTask(exTask.id, {
               title: text,
               completed: true,
-              details: `出汗约${sweatMl}ml，平均心率${avgBpm}`
+              details: detailStr
             }, todayKey);
           } else {
             store.addTask({
               title: text,
               category: "exercise",
               time: "下午/晚间",
-              details: `羽毛球对局消耗${calories}kcal，预估出汗${sweatMl}ml`,
+              details: detailStr,
               badge: "羽球实战"
             }, todayKey);
           }
           playGentleChime(880, 0.2);
           showToast(`✓ 已成功沉淀至今日打卡记录（已自动勾选完成）！`);
         });
-        mount.parentNode.insertBefore(sinkBtn, mount.nextSibling);
+
+        mount.parentNode.insertBefore(sinkBox, mount.nextSibling);
       }
     }
   }

@@ -1,11 +1,12 @@
-// 底部状态胶囊条模块 (Compact Footer Status Bar)
+// 底部状态胶囊条模块 (Compact Footer Status Bar with Depreciation & Evening Snapshot)
 import { store } from "../../core/store.js";
 import { getTodayKey, playGentleChime } from "../../core/utils.js";
 import { renderInventoryModal } from "../inventory/inventoryModal.js";
+import { renderEveningSnapshotModal } from "../profile/eveningSnapshotModal.js";
 
 export function renderOverviewFooterBar(onNavigate) {
   const container = document.createElement("div");
-  container.className = "bg-white dark:bg-slate-800 rounded-2xl px-4 py-2.5 border border-slate-200/90 dark:border-slate-700/80 shadow-xs flex flex-wrap items-center justify-between gap-3 text-xs transition-all";
+  container.className = "bg-white dark:bg-slate-800 rounded-2xl px-4 py-2 border border-slate-200/90 dark:border-slate-700/80 shadow-xs flex flex-wrap items-center justify-between gap-2.5 text-xs transition-all";
 
   const todayStr = getTodayKey();
   const lowStockItems = store.getLowStockItems();
@@ -22,6 +23,19 @@ export function renderOverviewFooterBar(onNavigate) {
     exerciseText = "今日体能：主动身心重启与户外排酸漫游";
   }
 
+  // 计算食材消耗天数倒计时
+  let pantryCountdownHtml = `<span class="text-slate-400 flex items-center space-x-1"><span>🛒 食材充足</span></span>`;
+  if (lowStockItems.length > 0) {
+    const urgent = lowStockItems[0];
+    const daysLeft = Math.max(0, Math.floor(urgent.stock / (urgent.dailyUsage || 1)));
+    pantryCountdownHtml = `
+      <button id="footer-jump-inventory" class="flex items-center space-x-1 text-amber-700 dark:text-amber-300 font-bold hover:underline">
+        <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
+        <span>🛒 ${urgent.name}剩${urgent.stock}${urgent.unit} (约支撑${daysLeft}天)</span>
+      </button>
+    `;
+  }
+
   container.innerHTML = `
     <!-- 左侧：今日体能安排胶囊 -->
     <div class="flex items-center space-x-2">
@@ -32,23 +46,20 @@ export function renderOverviewFooterBar(onNavigate) {
       </button>
     </div>
 
-    <!-- 右侧：食材库存与数据导出 -->
-    <div class="flex items-center space-x-3 ml-auto shrink-0">
-      ${lowStockItems.length > 0 ? `
-        <button id="footer-jump-inventory" class="flex items-center space-x-1 text-amber-700 dark:text-amber-300 font-bold hover:underline">
-          <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping"></span>
-          <span>🛒 储备告急 (${lowStockItems.length}项见底)</span>
-        </button>
-      ` : `
-        <span class="text-slate-400 flex items-center space-x-1">
-          <span>🛒 食材储备充足</span>
-        </span>
-      `}
+    <!-- 右侧：食材库存倒计时、晚间战报与数据备份 -->
+    <div class="flex items-center space-x-2.5 ml-auto shrink-0">
+      ${pantryCountdownHtml}
+
+      <span class="text-slate-300 dark:text-slate-600">|</span>
+
+      <button id="footer-evening-snapshot" class="px-2 py-0.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-bold transition-all flex items-center space-x-1" title="生成今日自律闭环快照与复盘战报">
+        <span>🌙 今日战报</span>
+      </button>
 
       <span class="text-slate-300 dark:text-slate-600">|</span>
 
       <button id="footer-export-json" class="text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 transition-colors flex items-center space-x-1 font-medium" title="一键导出所有任务记录与素材为 JSON">
-        <span>📥 备份数据</span>
+        <span>📥 备份</span>
       </button>
     </div>
   `;
@@ -59,6 +70,11 @@ export function renderOverviewFooterBar(onNavigate) {
 
   container.querySelector("#footer-jump-inventory")?.addEventListener("click", () => {
     renderInventoryModal();
+  });
+
+  container.querySelector("#footer-evening-snapshot")?.addEventListener("click", () => {
+    const modal = renderEveningSnapshotModal();
+    document.body.appendChild(modal);
   });
 
   container.querySelector("#footer-export-json")?.addEventListener("click", () => {
