@@ -1,0 +1,139 @@
+// 今日营养饮食系统规划与打卡卡片 (Daily Diet System Plan & Check-in)
+import { store } from "../../core/store.js";
+import { getTodayKey, playGentleChime } from "../../core/utils.js";
+
+export function renderOverviewDietCard(onNavigate) {
+  const container = document.createElement("div");
+  container.className = "bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-slate-200/90 dark:border-slate-700/80 shadow-xs flex flex-col justify-between space-y-3 transition-all";
+
+  const todayStr = getTodayKey();
+  const tasks = store.getTasksForDate(todayStr);
+  const dietTasks = tasks.filter((t) => t.category === "diet");
+
+  container.innerHTML = `
+    <div class="space-y-2.5">
+      <!-- 头部：标题与控糖标签 -->
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-2">
+        <div class="flex items-center space-x-2">
+          <span class="text-base sm:text-lg">🥗</span>
+          <div>
+            <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">今日营养与控糖饮食规划</h3>
+          </div>
+        </div>
+        <div class="flex items-center space-x-1.5">
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
+            控糖黄金序
+          </span>
+          <span class="text-[11px] text-slate-400 font-mono">
+            ${dietTasks.filter((t) => t.completed).length}/${dietTasks.length} 完成
+          </span>
+        </div>
+      </div>
+
+      <!-- 四餐具体方案与打卡条目 -->
+      <div class="space-y-1.5">
+        ${dietTasks.map((t) => {
+          const isDone = t.completed;
+          return `
+            <div data-diet-id="${t.id}" class="diet-item-row group p-2 rounded-xl border transition-all flex items-center justify-between gap-2 cursor-pointer ${
+              isDone
+                ? "bg-emerald-50/40 dark:bg-emerald-950/20 border-emerald-200/60 dark:border-emerald-800/40 opacity-75"
+                : "bg-slate-50/70 dark:bg-slate-750/40 border-slate-200/60 dark:border-slate-700/50 hover:border-slate-300 dark:hover:border-slate-600"
+            }">
+              <div class="flex items-center space-x-2 min-w-0 flex-1">
+                <button data-action="toggle-diet" data-id="${t.id}" class="shrink-0 w-4 h-4 rounded flex items-center justify-center border transition-all ${
+                  isDone
+                    ? "bg-emerald-500 border-emerald-500 text-white font-bold text-[10px]"
+                    : "border-slate-300 dark:border-slate-600 hover:border-emerald-500"
+                }">
+                  ${isDone ? "✓" : ""}
+                </button>
+
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center space-x-1.5">
+                    <span class="text-[10px] font-bold px-1.5 py-0.2 rounded shrink-0 ${
+                      isDone
+                        ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300"
+                        : "bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-600"
+                    }">
+                      ${t.label || t.badge || "配餐"}
+                    </span>
+                    <span class="text-xs font-semibold truncate ${
+                      isDone
+                        ? "line-through text-slate-400 dark:text-slate-500"
+                        : "text-slate-800 dark:text-slate-100"
+                    }">
+                      ${t.title}
+                    </span>
+                  </div>
+                  ${t.details ? `
+                    <p class="text-[10px] text-slate-400 dark:text-slate-500 truncate mt-0.5 leading-tight">${t.details}</p>
+                  ` : ""}
+                </div>
+              </div>
+
+              <!-- 右侧快捷编辑图标与时间 -->
+              <div class="flex items-center space-x-1 shrink-0">
+                <span class="text-[10px] text-slate-400 font-mono">${t.time.split("~")[0]}</span>
+                <button data-action="edit-diet" data-id="${t.id}" class="opacity-0 group-hover:opacity-100 p-1 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 text-[11px] transition-opacity" title="手动修改今日此餐规划">
+                  ✎
+                </button>
+              </div>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+
+    <!-- 底部直达链接 -->
+    <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+      <span class="text-slate-400">先喝汤吃菜肉，后吃米饭</span>
+      <button id="diet-jump-plan-btn" class="font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center space-x-0.5">
+        <span>四餐详细规程与外卖方案</span>
+        <span>➔</span>
+      </button>
+    </div>
+  `;
+
+  // 绑定打卡
+  container.querySelectorAll("[data-action='toggle-diet']").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute("data-id");
+      store.toggleTask(id, todayStr);
+      playGentleChime(659.25, 0.15);
+    });
+  });
+
+  container.querySelectorAll(".diet-item-row").forEach((row) => {
+    row.addEventListener("click", (e) => {
+      if (e.target.closest("[data-action='edit-diet']")) return;
+      const id = row.getAttribute("data-diet-id");
+      if (id) {
+        store.toggleTask(id, todayStr);
+        playGentleChime(659.25, 0.15);
+      }
+    });
+  });
+
+  // 绑定手动修改单餐规划
+  container.querySelectorAll("[data-action='edit-diet']").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = btn.getAttribute("data-id");
+      const target = dietTasks.find((t) => t.id === id);
+      if (!target) return;
+      const newTitle = prompt("修改今日该餐内容（如实际换成全麦三明治/轻食牛肉）：", target.title);
+      if (newTitle && newTitle.trim()) {
+        store.updateTask(id, { title: newTitle.trim(), brief: newTitle.trim() }, todayStr);
+        playGentleChime(784, 0.15);
+      }
+    });
+  });
+
+  container.querySelector("#diet-jump-plan-btn")?.addEventListener("click", () => {
+    onNavigate("plans", "diet_plan");
+  });
+
+  return container;
+}

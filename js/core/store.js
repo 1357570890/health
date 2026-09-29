@@ -67,33 +67,103 @@ class Store {
   }
 
   generateBaselineTasks(dayName) {
-    const categoryMap = { meal: "diet", sport: "sport", research: "research", water: "habit", sleep: "habit" };
-    return TIMETABLE_SLOTS.map((slot) => {
-      const cell = getTimetableCell(dayName, slot.id);
-      return {
-        id: `fixed_${slot.id}`,
-        time: slot.time,
-        label: slot.label,
-        title: cell.title,
-        category: categoryMap[cell.type] || "habit",
+    let exerciseTitle = "力量抗阻训练（俯卧撑+划船+面拉护肩4组）";
+    let exerciseTime = "19:00~20:00";
+    let exerciseBadge = "力量护肩";
+    if (dayName === "周二" || dayName === "周四") {
+      exerciseTitle = "操场低心率慢跑（4公里 Zone 2 有氧）";
+      exerciseBadge = "慢跑心肺";
+    } else if (dayName === "周六") {
+      exerciseTitle = "球馆羽毛球对抗（90分钟实战对局）";
+      exerciseTime = "14:30~17:00";
+      exerciseBadge = "羽球实战";
+    } else if (dayName === "周日") {
+      exerciseTitle = "主动身心重启与户外排酸（漫游散步）";
+      exerciseTime = "16:00~17:00";
+      exerciseBadge = "身心重启";
+    }
+
+    return [
+      {
+        id: "fixed_diet_breakfast",
+        time: "07:30~08:30",
+        label: "控糖早餐",
+        title: "全黑麦面包2片 + 纯牛奶250ml + 鸡蛋2个",
+        category: "diet",
         isFixed: true,
         completed: false,
-        details: cell.details,
-        brief: cell.brief,
-        badge: cell.badge,
-        sub: cell.sub || "",
-        tips: cell.tips || ""
-      };
-    });
+        details: "补充约28g优质蛋白，蛋黄富含胆碱供给脑力",
+        brief: "全黑麦+纯牛奶+双鸡蛋",
+        badge: "早餐规划"
+      },
+      {
+        id: "fixed_diet_lunch",
+        time: "11:30~12:30",
+        label: "控糖午餐",
+        title: "食堂1拳米饭 + 2份蔬菜(涮油) + 开自带鸡胸肉",
+        category: "diet",
+        isFixed: true,
+        completed: false,
+        details: "控糖黄金序：先喝汤吃菜肉，最后吃米饭，下午不犯困",
+        brief: "1拳米饭+2份素菜+自带蛋白",
+        badge: "午餐规划"
+      },
+      {
+        id: "fixed_diet_snack",
+        time: "13:30~15:00",
+        label: "加餐节律",
+        title: "黑咖啡1杯（15:00锁死红线）+ 每日温水2000ml",
+        category: "diet",
+        isFixed: true,
+        completed: false,
+        details: "15:00后严禁摄入任何咖啡因，保护夜间深度睡眠",
+        brief: "黑咖啡+分段小口温水",
+        badge: "加餐规划"
+      },
+      {
+        id: "fixed_diet_dinner",
+        time: "17:30~18:30",
+        label: "低GI晚餐",
+        title: "蒸红薯150g + 即食鸡胸肉100g + 黄瓜1根",
+        category: "diet",
+        isFixed: true,
+        completed: false,
+        details: "低碳水控能，睡前3小时严格禁食（20:30后只饮清水）",
+        brief: "红薯+鸡胸肉+黄瓜",
+        badge: "晚餐规划"
+      },
+      {
+        id: "fixed_routine_exercise",
+        time: exerciseTime,
+        label: "今日体能",
+        title: exerciseTitle,
+        category: "exercise",
+        isFixed: true,
+        completed: false,
+        details: "按计划执行，不力竭重在维持心肺代谢与精力充沛",
+        brief: "3+2体能与羽球实操",
+        badge: exerciseBadge
+      }
+    ];
   }
 
   ensureDateTasks(dateKey) {
+    const targetDate = new Date(dateKey + "T00:00:00");
+    const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+    const dayName = weekdays[targetDate.getDay()];
+
     if (!this.tasksByDate[dateKey]) {
-      const targetDate = new Date(dateKey + "T00:00:00");
-      const weekdays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
-      const dayName = weekdays[targetDate.getDay()];
       this.tasksByDate[dateKey] = this.generateBaselineTasks(dayName);
       this.saveTasks();
+    } else {
+      const currentList = this.tasksByDate[dateKey];
+      const hasOldSlots = currentList.some((t) => t.id && t.id.startsWith("fixed_slot_"));
+      if (hasOldSlots) {
+        const customTasks = currentList.filter((t) => !t.isFixed || !t.id.startsWith("fixed_slot_"));
+        const baseDietTasks = this.generateBaselineTasks(dayName);
+        this.tasksByDate[dateKey] = [...baseDietTasks, ...customTasks.filter((t) => !t.id.startsWith("fixed_"))];
+        this.saveTasks();
+      }
     }
   }
 

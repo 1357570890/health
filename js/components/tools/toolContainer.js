@@ -1,6 +1,5 @@
-// 工具箱顶层容器：聚合各类交互式打卡、换算、计时与同步工具
+// 工具箱顶层容器：工具陈列架与交互式工具挂载中枢
 import { TOOLS_REGISTRY } from "../../data/registry.js";
-import { renderTrackerTool } from "./trackerTool.js";
 import { renderBadmintonTool } from "./badmintonTool.js";
 import { renderMacroTdeeTool } from "./macroTdeeTool.js";
 import { renderCaffeineTool } from "./caffeineTool.js";
@@ -10,91 +9,144 @@ import { renderDeskTimerTool } from "./deskTimerTool.js";
 import { renderBreathingTool } from "./breathingTool.js";
 import { renderBackupTool } from "./backupTool.js";
 
-export function renderToolContainer(currentToolId = "tracker_tool", onSelectTool) {
+export function renderToolContainer(currentToolId = "gallery", onSelectTool) {
   const container = document.createElement("div");
-  container.className = "space-y-6";
+  container.className = "space-y-5 animate-in fade-in duration-150";
 
-  const currentTool = TOOLS_REGISTRY.find((t) => t.id === currentToolId) || TOOLS_REGISTRY[0];
+  // 如果没有指定具体子工具，或者指定为 gallery / all，展示工具矩阵架
+  const isGalleryView = !currentToolId || currentToolId === "gallery" || currentToolId === "tracker_tool";
+  const activeTool = TOOLS_REGISTRY.find((t) => t.id === currentToolId);
 
-  container.innerHTML = `
-    <!-- 头部工具箱导航条 -->
-    <div class="bg-gradient-to-r from-sky-600 via-indigo-700 to-slate-800 rounded-3xl p-6 sm:p-7 text-white shadow-lg shadow-sky-950/20">
-      <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
-        <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/20 backdrop-blur-sm">
-          🧰 辅助执行工具箱（交互与落地辅助）
-        </span>
-        <span class="text-xs text-sky-100">为计划高效落地赋能</span>
+  if (isGalleryView || !activeTool) {
+    // 1. 工具矩阵陈列架模式 (清晰展示所有8大工具，卡片一目了然)
+    container.innerHTML = `
+      <!-- 头部介绍条 -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-5 sm:p-6 text-white border border-slate-800 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center space-x-2 text-xs text-indigo-300 font-mono mb-1">
+            <span>🧰 PRACTICAL TOOLBOX</span>
+            <span>·</span>
+            <span>高频实用工具库</span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold tracking-tight">日常生活与科研体能辅助工具箱</h2>
+          <p class="text-xs text-slate-300 mt-1 max-w-xl leading-relaxed">
+            专为工位久坐用脑、羽毛球对抗、控糖热量核算与夜间深度睡眠打造的即开即用交互算盘。
+          </p>
+        </div>
+        <div class="text-xs font-semibold px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 text-white shrink-0 self-start sm:self-auto">
+          共收录 8 款专属工具
+        </div>
       </div>
-      <h2 class="text-xl sm:text-2xl font-black tracking-tight mt-1">日常生活辅助工具与打卡矩阵</h2>
-      <p class="text-xs sm:text-sm text-sky-100 mt-1.5 max-w-2xl leading-relaxed">
-        工具服务于计划。在这里记录每日饮水、执行微拉伸番茄钟、换算1:1食材或进行4-7-8呼吸放松，让自律变得轻松可视化。
-      </p>
 
-      <!-- 工具切换标签栏 -->
-      <div class="mt-6 flex items-center space-x-2 overflow-x-auto pb-1 no-scrollbar">
-        ${TOOLS_REGISTRY.map((t) => {
-          const isSelected = t.id === currentTool.id;
-          return `
-            <button
-              data-tool="${t.id}"
-              class="tool-tab-btn flex-shrink-0 flex items-center space-x-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                isSelected
-                  ? "bg-white text-slate-900 shadow-md scale-105"
-                  : "bg-black/20 text-white hover:bg-black/30"
-              }"
-            >
-              <span>${t.icon}</span>
-              <span>${t.title}</span>
+      <!-- 8大工具响应式卡片陈列网格 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        ${TOOLS_REGISTRY.filter((t) => t.id !== "tracker_tool").map((t) => `
+          <div data-tool-card="${t.id}" class="tool-card group bg-white dark:bg-slate-800 rounded-2xl p-4 border border-slate-200/90 dark:border-slate-700/80 shadow-xs hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between space-y-3">
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-2xl">${t.icon}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
+                  ${t.badge}
+                </span>
+              </div>
+              <h3 class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                ${t.title}
+              </h3>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 leading-relaxed">
+                ${t.summary}
+              </p>
+            </div>
+            <button class="w-full mt-2 py-1.5 px-3 rounded-xl bg-slate-50 group-hover:bg-indigo-600 text-slate-700 group-hover:text-white dark:bg-slate-750 dark:text-slate-200 dark:group-hover:bg-indigo-600 font-bold text-xs transition-all flex items-center justify-center space-x-1">
+              <span>打开工具</span>
+              <span>➔</span>
             </button>
-          `;
-        }).join("")}
+          </div>
+        `).join("")}
+      </div>
+    `;
+
+    container.querySelectorAll(".tool-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const tid = card.getAttribute("data-tool-card");
+        onSelectTool(tid);
+      });
+    });
+
+    return container;
+  }
+
+  // 2. 具体子工具运行界面 (带顶部极简返回栏与快速切换药丸条)
+  container.innerHTML = `
+    <!-- 工具操作顶部导航 -->
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-800 p-3.5 sm:p-4 rounded-2xl border border-slate-200/90 dark:border-slate-700/80 shadow-xs">
+      <div class="flex items-center space-x-2">
+        <button id="back-to-gallery-btn" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-650 text-slate-700 dark:text-slate-200 text-xs font-bold transition-all flex items-center space-x-1">
+          <span>← 工具列表</span>
+        </button>
+        <span class="text-slate-300 dark:text-slate-600">|</span>
+        <div class="flex items-center space-x-1.5">
+          <span class="text-lg">${activeTool.icon}</span>
+          <span class="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">${activeTool.title}</span>
+        </div>
+      </div>
+
+      <!-- 快速横向切换条 -->
+      <div class="flex items-center space-x-1.5 overflow-x-auto no-scrollbar">
+        ${TOOLS_REGISTRY.filter((t) => t.id !== "tracker_tool").map((t) => `
+          <button data-switch-tool="${t.id}" class="px-2 py-1 rounded-lg text-xs font-medium transition-all ${
+            t.id === activeTool.id
+              ? "bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold shadow-xs"
+              : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-750"
+          }">
+            ${t.icon} ${t.title.split("与")[0].split("与")[0].slice(0, 4)}
+          </button>
+        `).join("")}
       </div>
     </div>
 
-    <!-- 具体工具渲染区 -->
-    <div id="tool-render-body"></div>
+    <!-- 工具核心操作渲染容器 -->
+    <div id="tool-active-canvas"></div>
   `;
 
-  // 渲染选中的子工具
-  const toolRenderBody = container.querySelector("#tool-render-body");
-  if (toolRenderBody) {
-    switch (currentTool.id) {
-      case "tracker_tool":
-        toolRenderBody.appendChild(renderTrackerTool());
-        break;
+  const canvas = container.querySelector("#tool-active-canvas");
+  if (canvas) {
+    switch (activeTool.id) {
       case "badminton_tool":
-        toolRenderBody.appendChild(renderBadmintonTool());
+        canvas.appendChild(renderBadmintonTool());
         break;
       case "macro_tool":
-        toolRenderBody.appendChild(renderMacroTdeeTool());
+        canvas.appendChild(renderMacroTdeeTool());
         break;
       case "caffeine_tool":
-        toolRenderBody.appendChild(renderCaffeineTool());
+        canvas.appendChild(renderCaffeineTool());
         break;
       case "substitute_tool":
-        toolRenderBody.appendChild(renderFoodSubTool());
+        canvas.appendChild(renderFoodSubTool());
         break;
       case "water_tool":
-        toolRenderBody.appendChild(renderWaterTool());
+        canvas.appendChild(renderWaterTool());
         break;
       case "desk_timer_tool":
-        toolRenderBody.appendChild(renderDeskTimerTool());
+        canvas.appendChild(renderDeskTimerTool());
         break;
       case "breathing_tool":
-        toolRenderBody.appendChild(renderBreathingTool());
+        canvas.appendChild(renderBreathingTool());
         break;
       case "backup_tool":
-        toolRenderBody.appendChild(renderBackupTool());
+        canvas.appendChild(renderBackupTool());
         break;
       default:
-        toolRenderBody.appendChild(renderTrackerTool());
+        canvas.appendChild(renderBadmintonTool());
     }
   }
 
-  // 绑定切换事件
-  container.querySelectorAll(".tool-tab-btn").forEach((btn) => {
+  container.querySelector("#back-to-gallery-btn")?.addEventListener("click", () => {
+    onSelectTool("gallery");
+  });
+
+  container.querySelectorAll("[data-switch-tool]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      const tid = btn.getAttribute("data-tool");
+      const tid = btn.getAttribute("data-switch-tool");
       onSelectTool(tid);
     });
   });
