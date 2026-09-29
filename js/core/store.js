@@ -196,6 +196,55 @@ class Store {
     return this.tasksByDate[this.selectedDate] || [];
   }
 
+  getTomorrowKey(baseDate = getTodayKey()) {
+    const d = new Date(baseDate + "T00:00:00");
+    d.setDate(d.getDate() + 1);
+    const yr = d.getFullYear();
+    const mo = String(d.getMonth() + 1).padStart(2, "0");
+    const da = String(d.getDate()).padStart(2, "0");
+    return `${yr}-${mo}-${da}`;
+  }
+
+  getYesterdayKey(baseDate = getTodayKey()) {
+    const d = new Date(baseDate + "T00:00:00");
+    d.setDate(d.getDate() - 1);
+    const yr = d.getFullYear();
+    const mo = String(d.getMonth() + 1).padStart(2, "0");
+    const da = String(d.getDate()).padStart(2, "0");
+    return `${yr}-${mo}-${da}`;
+  }
+
+  getYesterdayUnfinishedTasks() {
+    const yestKey = this.getYesterdayKey();
+    if (!this.tasksByDate[yestKey]) return [];
+    return this.tasksByDate[yestKey].filter((t) => !t.isFixed && !t.completed);
+  }
+
+  rolloverYesterdayTasks() {
+    const todayKey = getTodayKey();
+    const uncompleted = this.getYesterdayUnfinishedTasks();
+    if (uncompleted.length === 0) return 0;
+
+    this.ensureDateTasks(todayKey);
+    const currentToday = this.tasksByDate[todayKey] || [];
+    uncompleted.forEach((t) => {
+      const alreadyExists = currentToday.some((ct) => ct.title === t.title);
+      if (!alreadyExists) {
+        currentToday.push({
+          ...t,
+          id: `custom_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+          badge: "昨日顺延",
+          completed: false
+        });
+      }
+    });
+
+    this.saveTasks();
+    this.emit("tasksChanged", this.tasksByDate[todayKey]);
+    this.emit("stateChanged", null);
+    return uncompleted.length;
+  }
+
   addTask(task, targetDate = this.selectedDate) {
     this.ensureDateTasks(targetDate);
     const isWork = task.category === "research" || task.category === "work";
@@ -358,6 +407,8 @@ class Store {
   }
 
   exportDataJson() {
+    const rawWeight = localStorage.getItem("grad_plan_weight_logs_v1");
+    const rawFood = localStorage.getItem("grad_plan_food_logs_v1");
     return JSON.stringify(
       {
         records: this.records,
@@ -365,6 +416,8 @@ class Store {
         presets: this.presets,
         profile: this.profile,
         inventory: this.inventory,
+        weightLogs: safeJsonParse(rawWeight, []),
+        foodLogs: safeJsonParse(rawFood, []),
         exportedAt: new Date().toISOString()
       },
       null,
@@ -380,6 +433,12 @@ class Store {
       if (parsed.presets) this.presets = parsed.presets;
       if (parsed.profile) this.profile = parsed.profile;
       if (parsed.inventory) this.inventory = parsed.inventory;
+      if (parsed.weightLogs) {
+        localStorage.setItem("grad_plan_weight_logs_v1", JSON.stringify(parsed.weightLogs));
+      }
+      if (parsed.foodLogs) {
+        localStorage.setItem("grad_plan_food_logs_v1", JSON.stringify(parsed.foodLogs));
+      }
       this.saveRecords();
       this.saveTasks();
       this.savePresets();

@@ -158,9 +158,23 @@ export function renderMacroTdeeTool() {
               </p>
             </div>
           </div>
+
+          <button id="save-macro-to-profile" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center space-x-1.5 transition-all shadow-sm active:scale-95">
+            <span>📥 设定为今日全天营养目标 (${res.targetCalories} kcal · 蛋白质 ${res.proteinGrams}g)</span>
+          </button>
         </div>
       </div>
     `;
+
+    container.querySelector("#save-macro-to-profile")?.addEventListener("click", () => {
+      store.updateUserProfile({
+        targetCalories: res.targetCalories,
+        proteinTarget: res.proteinGrams,
+        waterTarget: res.waterTarget
+      });
+      playGentleChime(784, 0.2);
+      showToast(`✓ 已成功将全天目标同步设定为 ${res.targetCalories} kcal！`);
+    });
 
     // 绑定事件
     ["tdee-weight", "tdee-height", "tdee-age"].forEach((id) => {

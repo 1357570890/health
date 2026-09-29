@@ -1,6 +1,8 @@
 // 今日营养饮食系统规划与打卡卡片 (Daily Diet System Plan & Check-in)
 import { store } from "../../core/store.js";
 import { getTodayKey, playGentleChime } from "../../core/utils.js";
+import { handleMealInventoryLinkage } from "../../core/mealInventoryLinker.js";
+import { renderDiningOutModal } from "../diet/diningOutModal.js";
 
 export function renderOverviewDietCard(onNavigate) {
   const container = document.createElement("div");
@@ -21,9 +23,9 @@ export function renderOverviewDietCard(onNavigate) {
           </div>
         </div>
         <div class="flex items-center space-x-1.5">
-          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
-            控糖黄金序
-          </span>
+          <button id="diet-open-dining-modal" class="px-2 py-0.5 rounded-lg bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/60 text-[10px] font-bold transition-all" title="在外就餐或吃外卖，记录热量大卡">
+            + 外食记录
+          </button>
           <span class="text-[11px] text-slate-400 font-mono">
             ${dietTasks.filter((t) => t.completed).length}/${dietTasks.length} 完成
           </span>
@@ -87,7 +89,7 @@ export function renderOverviewDietCard(onNavigate) {
 
     <!-- 底部直达链接 -->
     <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
-      <span class="text-slate-400">先喝汤吃菜肉，后吃米饭</span>
+      <span class="text-slate-400">打卡自动扣除对应食材库存</span>
       <button id="diet-jump-plan-btn" class="font-bold text-emerald-600 dark:text-emerald-400 hover:underline flex items-center space-x-0.5">
         <span>四餐详细规程与外卖方案</span>
         <span>➔</span>
@@ -95,13 +97,21 @@ export function renderOverviewDietCard(onNavigate) {
     </div>
   `;
 
-  // 绑定打卡
+  // 绑定打卡（并自动联动库存扣减）
+  const handleToggle = (id) => {
+    const target = dietTasks.find((t) => t.id === id);
+    if (!target) return;
+    const willBeCompleted = !target.completed;
+    store.toggleTask(id, todayStr);
+    handleMealInventoryLinkage(id, willBeCompleted);
+    playGentleChime(659.25, 0.15);
+  };
+
   container.querySelectorAll("[data-action='toggle-diet']").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
       const id = btn.getAttribute("data-id");
-      store.toggleTask(id, todayStr);
-      playGentleChime(659.25, 0.15);
+      handleToggle(id);
     });
   });
 
@@ -109,10 +119,7 @@ export function renderOverviewDietCard(onNavigate) {
     row.addEventListener("click", (e) => {
       if (e.target.closest("[data-action='edit-diet']")) return;
       const id = row.getAttribute("data-diet-id");
-      if (id) {
-        store.toggleTask(id, todayStr);
-        playGentleChime(659.25, 0.15);
-      }
+      if (id) handleToggle(id);
     });
   });
 
@@ -123,12 +130,17 @@ export function renderOverviewDietCard(onNavigate) {
       const id = btn.getAttribute("data-id");
       const target = dietTasks.find((t) => t.id === id);
       if (!target) return;
-      const newTitle = prompt("修改今日该餐内容（如实际换成全麦三明治/轻食牛肉）：", target.title);
+      const newTitle = prompt("修改今日该餐内容（如换成赛百味牛肉三明治/聚餐火锅）：", target.title);
       if (newTitle && newTitle.trim()) {
         store.updateTask(id, { title: newTitle.trim(), brief: newTitle.trim() }, todayStr);
         playGentleChime(784, 0.15);
       }
     });
+  });
+
+  container.querySelector("#diet-open-dining-modal")?.addEventListener("click", () => {
+    const modal = renderDiningOutModal();
+    document.body.appendChild(modal);
   });
 
   container.querySelector("#diet-jump-plan-btn")?.addEventListener("click", () => {

@@ -1,10 +1,13 @@
-// 工位极简顶栏状态模块 (Compact One-Screen Status Bar)
+// 工位极简顶栏状态模块 (Compact One-Screen Status Bar with Weight & Meal Trigger)
 import { store } from "../../core/store.js";
 import { getTodayKey, getTodayDisplay } from "../../core/utils.js";
+import { healthTracker } from "../../core/healthTrackerService.js";
+import { renderWeightModal } from "../profile/weightModal.js";
+import { renderDiningOutModal } from "../diet/diningOutModal.js";
 
 export function renderOverviewCockpit() {
   const container = document.createElement("div");
-  container.className = "bg-white dark:bg-slate-800 rounded-2xl px-4 py-2.5 sm:py-3 border border-slate-200/90 dark:border-slate-700/80 shadow-xs flex flex-wrap items-center justify-between gap-2.5 transition-all text-xs";
+  container.className = "bg-white dark:bg-slate-800 rounded-2xl px-4 py-2 sm:py-2.5 border border-slate-200/90 dark:border-slate-700/80 shadow-xs flex flex-wrap items-center justify-between gap-2.5 transition-all text-xs";
 
   const todayStr = getTodayKey();
   const tasks = store.getTasksForDate(todayStr);
@@ -12,6 +15,8 @@ export function renderOverviewCockpit() {
   const doneCount = tasks.filter((t) => t.completed).length;
   const percent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
   const profile = store.getUserProfile();
+  const latestWeight = healthTracker.getLatestWeight();
+  const todayFoodCal = healthTracker.getTodayFoodCalories(todayStr);
 
   // 动态工位实时单行指引
   const now = new Date();
@@ -51,8 +56,26 @@ export function renderOverviewCockpit() {
       </span>
     </div>
 
-    <!-- 中部：紧凑实时工位单行提示 -->
-    <div class="hidden md:flex items-center space-x-1.5 text-slate-500 dark:text-slate-400 min-w-0 flex-1 truncate px-2">
+    <!-- 中部：体重与外食热量快速微胶囊 -->
+    <div class="flex items-center space-x-2 shrink-0">
+      <button id="quick-open-weight-btn" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-650 text-slate-700 dark:text-slate-200 text-[11px] font-medium transition-all flex items-center space-x-1" title="查看或记录体重变化">
+        <span>⚖️</span>
+        <span class="font-mono font-bold">${latestWeight.current}kg</span>
+        ${latestWeight.hasLog && latestWeight.diff !== 0 ? `
+          <span class="text-[10px] font-mono ${latestWeight.diff > 0 ? "text-rose-500" : "text-emerald-500"}">
+            (${latestWeight.diff > 0 ? `+${latestWeight.diff}` : `${latestWeight.diff}`})
+          </span>
+        ` : ""}
+      </button>
+
+      <button id="quick-open-dining-btn" class="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-650 text-slate-700 dark:text-slate-200 text-[11px] font-medium transition-all flex items-center space-x-1" title="在外吃或聚餐，记录实际摄入热量与历史">
+        <span>🍜</span>
+        <span>${todayFoodCal > 0 ? `${todayFoodCal} kcal` : "外食记账"}</span>
+      </button>
+    </div>
+
+    <!-- 中右：紧凑实时工位单行提示 -->
+    <div class="hidden lg:flex items-center space-x-1.5 text-slate-500 dark:text-slate-400 min-w-0 flex-1 truncate px-2">
       <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0 animate-pulse"></span>
       <span class="truncate font-medium text-[11px]">${advice}</span>
     </div>
@@ -60,15 +83,25 @@ export function renderOverviewCockpit() {
     <!-- 右侧：今日闭环完成进度 -->
     <div class="flex items-center space-x-2.5 shrink-0 ml-auto">
       <div class="flex items-baseline space-x-1 text-slate-700 dark:text-slate-200">
-        <span class="text-[11px] text-slate-400">今日完成</span>
+        <span class="text-[11px] text-slate-400">完成</span>
         <span class="font-extrabold text-slate-900 dark:text-white font-mono">${doneCount}/${totalCount}</span>
         <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">(${percent}%)</span>
       </div>
-      <div class="w-16 sm:w-20 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+      <div class="w-14 sm:w-16 h-1.5 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
         <div class="h-full bg-emerald-500 rounded-full transition-all duration-300" style="width: ${percent}%;"></div>
       </div>
     </div>
   `;
+
+  container.querySelector("#quick-open-weight-btn")?.addEventListener("click", () => {
+    const modal = renderWeightModal();
+    document.body.appendChild(modal);
+  });
+
+  container.querySelector("#quick-open-dining-btn")?.addEventListener("click", () => {
+    const modal = renderDiningOutModal();
+    document.body.appendChild(modal);
+  });
 
   return container;
 }

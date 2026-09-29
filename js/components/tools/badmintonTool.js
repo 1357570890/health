@@ -257,6 +257,40 @@ export function renderBadmintonTool() {
           <span class="text-[10px] text-indigo-500 block mt-1">间歇无氧为主</span>
         </div>
       `;
+
+      // 增加沉淀至今日运动记录按钮
+      const existingBtn = container.querySelector("#save-badminton-to-today");
+      if (!existingBtn) {
+        const sinkBtn = document.createElement("button");
+        sinkBtn.id = "save-badminton-to-today";
+        sinkBtn.className = "w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center space-x-1.5 transition-all shadow-sm active:scale-95";
+        sinkBtn.innerHTML = `<span>📥 沉淀至今日打卡：羽毛球实战 (${durMin}分钟 · 消耗${calories}kcal)</span>`;
+        sinkBtn.addEventListener("click", () => {
+          const todayKey = getTodayKey();
+          store.ensureDateTasks(todayKey);
+          const tasks = store.getTasksForDate(todayKey);
+          const exTask = tasks.find((t) => t.category === "exercise" || t.id.includes("exercise"));
+          const text = `羽毛球实战对抗 (${durMin}分钟 · 消耗${calories}kcal · 等效跑步${equivalentKm}km)`;
+          if (exTask) {
+            store.updateTask(exTask.id, {
+              title: text,
+              completed: true,
+              details: `出汗约${sweatMl}ml，平均心率${avgBpm}`
+            }, todayKey);
+          } else {
+            store.addTask({
+              title: text,
+              category: "exercise",
+              time: "下午/晚间",
+              details: `羽毛球对局消耗${calories}kcal，预估出汗${sweatMl}ml`,
+              badge: "羽球实战"
+            }, todayKey);
+          }
+          playGentleChime(880, 0.2);
+          showToast(`✓ 已成功沉淀至今日打卡记录（已自动勾选完成）！`);
+        });
+        mount.parentNode.insertBefore(sinkBtn, mount.nextSibling);
+      }
     }
   }
 
