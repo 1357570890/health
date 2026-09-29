@@ -23,6 +23,20 @@ html, body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* 模态弹窗全屏覆盖与定位安全保底 */
+.fixed {
+  position: fixed !important;
+}
+.inset-0 {
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+}
+.z-50 {
+  z-index: 50 !important;
+}
+
 /* SVG 尺寸固化防护 (杜绝未显式定义时的自然撑大) */
 svg {
   flex-shrink: 0;
