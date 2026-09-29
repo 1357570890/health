@@ -59,10 +59,9 @@
 ## 🌐 一键上线到 GitHub Pages（永久公网域名）
 
 根目录下已内置自动化部署脚本 [`deploy-github.bat`](file:///e:/健康生活/deploy-github.bat)：
-1. 在 GitHub 上新建一个空仓库（例如命名为 `health`）；
-2. 双击运行 [`deploy-github.bat`](file:///e:/健康生活/deploy-github.bat)，输入仓库地址，一键自动推送；
-3. 在 GitHub 仓库的 **Settings ➜ Pages** 中，将 Branch 选为 `main`，点击 Save；
-4. 等待1分钟即可获得属于您的永久专属域名（例如 `https://yourname.github.io/health/`），电脑关机手机也能全球访问！
+1. 仓库已关联至 GitHub：`https://github.com/1357570890/plan`；
+2. 专属永久公网网址：`https://1357570890.github.io/plan/`；
+3. 本地修改后双击 [`update.bat`](file:///e:/健康生活/update.bat) 按回车，3秒即可完成云端同步更新！
 
 ---
 

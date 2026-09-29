@@ -13,22 +13,8 @@
   <meta name="apple-mobile-web-app-title" content="研途规划">
   <meta name="theme-color" content="#0f172a">
   
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            slate: {
-              750: '#293548'
-            }
-          }
-        }
-      }
-    };
-  </script>
+  <!-- 本地静态预编译样式 (0 外部网络请求，毫秒级极速直出) -->
+  <link rel="stylesheet" href="./css/tailwind.min.css">
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 antialiased selection:bg-emerald-500 selection:text-white">
@@ -36,6 +22,6 @@
   <div id="app"></div>
 
   <!-- 主业务入口模块 -->
-  <script type="module" src="./js/app.js?v=3.0"></script>
+  <script type="module" src="./js/app.js?v=4.0"></script>
 </body>
 </html>

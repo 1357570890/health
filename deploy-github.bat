@@ -8,7 +8,7 @@ cd /d "%BASE_DIR%"
 echo ==================================================
 echo 🚀 研途生活健康中枢 - GitHub Pages 部署与更新
 echo ==================================================
-echo 专属公网地址：https://1357570890.github.io/health/
+echo 专属公网地址：https://1357570890.github.io/plan/
 echo.
 
 git status -s
@@ -24,7 +24,7 @@ git push origin main
 echo.
 echo ==================================================
 echo 🎉 推送完成！GitHub Pages 将在20~30秒内自动刷新生效。
-echo 手机/电脑访问地址：https://1357570890.github.io/health/
+echo 手机/电脑访问地址：https://1357570890.github.io/plan/
 echo ==================================================
 echo.
 pause

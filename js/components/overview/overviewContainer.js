@@ -5,7 +5,7 @@ import { PLANS_REGISTRY, TOOLS_REGISTRY } from "../../data/registry.js?v=3";
 
 export function renderOverviewContainer(onNavigate) {
   const container = document.createElement("div");
-  container.className = "space-y-6 sm:space-y-8 animate-in fade-in duration-200";
+  container.className = "space-y-6 animate-in fade-in duration-150";
 
   const todayStr = getTodayKey();
   const tasks = typeof store.getTasksForDate === "function"
@@ -17,11 +17,11 @@ export function renderOverviewContainer(onNavigate) {
 
   // 五大细分领域统计
   const trackStats = {
-    research: { label: "科研攻坚", icon: "🧪", total: 0, done: 0, color: "indigo" },
-    diet: { label: "科学饮食", icon: "🥗", total: 0, done: 0, color: "emerald" },
-    exercise: { label: "体能羽球", icon: "🏃", total: 0, done: 0, color: "amber" },
-    growth: { label: "个人提升", icon: "📚", total: 0, done: 0, color: "blue" },
-    routine: { label: "工位作息", icon: "⏰", total: 0, done: 0, color: "rose" }
+    research: { label: "学术科研", total: 0, done: 0, tagClass: "bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800" },
+    diet: { label: "营养饮食", total: 0, done: 0, tagClass: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800" },
+    exercise: { label: "体能羽球", total: 0, done: 0, tagClass: "bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800" },
+    growth: { label: "个人提升", total: 0, done: 0, tagClass: "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800" },
+    routine: { label: "工位作息", total: 0, done: 0, tagClass: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700" }
   };
 
   tasks.forEach((t) => {
@@ -33,223 +33,209 @@ export function renderOverviewContainer(onNavigate) {
     if (t.completed) tr.done += 1;
   });
 
-  // 获取当前星期
-  const weekDays = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
-  const weekDayName = weekDays[new Date().getDay()];
-
   container.innerHTML = `
-    <!-- 1. 顶部全域规划总览驾驶舱 -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 text-white p-6 sm:p-8 shadow-xl border border-slate-700/50">
-      <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-      <div class="absolute right-20 -top-10 w-60 h-60 bg-indigo-500/15 rounded-full blur-3xl pointer-events-none"></div>
-
-      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div class="space-y-2">
-          <div class="flex items-center space-x-2">
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
-              🧭 研途全域规划中枢 · 总控看板
+    <!-- 1. 顶部总览驾驶舱 (极简专业质感) -->
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-7 border border-slate-200/90 dark:border-slate-700/80 shadow-sm transition-all">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-1.5">
+          <div class="flex items-center space-x-2.5">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200">
+              规划总控
             </span>
             <span class="text-xs text-slate-400 font-mono">${getTodayDisplay()}</span>
           </div>
-          <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white">
-            今日全域规划执行总览
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            今日全域执行概况
           </h2>
-          <p class="text-xs sm:text-sm text-slate-300 max-w-xl leading-relaxed">
-            以长周期科研自律为核心，融合控糖饮食、体能训练、个人进阶与作息管理。五维协同，清晰把控每一阶段。
+          <p class="text-xs text-slate-500 dark:text-slate-400 max-w-lg leading-relaxed">
+            科研工位坐班、科学饮食、体能羽球与身心作息一体化管理，把控长周期执行闭环。
           </p>
         </div>
 
-        <!-- 今日完成度综合大卡片 -->
-        <div class="bg-white/10 backdrop-blur-md rounded-2xl p-4 sm:p-5 border border-white/10 flex items-center space-x-5 min-w-[240px]">
-          <div class="relative flex items-center justify-center">
-            <svg class="w-16 h-16 transform -rotate-90">
-              <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" class="text-white/20" fill="transparent" />
-              <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="6" class="text-emerald-400 transition-all duration-700" stroke-linecap="round" fill="transparent" stroke-dasharray="175.9" stroke-dashoffset="${175.9 - (175.9 * percent) / 100}" />
-            </svg>
-            <span class="absolute text-sm font-black text-white">${percent}%</span>
-          </div>
-          <div class="space-y-1">
-            <span class="text-xs text-slate-300 font-semibold block">今日全域完成度</span>
-            <div class="text-lg font-black text-white">
-              <span>${doneCount}</span>
-              <span class="text-xs text-slate-400 font-normal"> / ${totalCount} 项完成</span>
+        <!-- 完成度数据条目 -->
+        <div class="flex items-center gap-4 sm:gap-6 bg-slate-50 dark:bg-slate-750/70 px-5 py-4 rounded-xl border border-slate-200/70 dark:border-slate-700/60">
+          <div class="space-y-0.5">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider block">今日完成度</span>
+            <div class="flex items-baseline space-x-2">
+              <span class="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">${percent}%</span>
+              <span class="text-xs text-slate-500 dark:text-slate-400 font-medium">${doneCount}/${totalCount} 项</span>
             </div>
-            <button id="go-today-action-btn" class="mt-1 px-3 py-1 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs shadow-md transition-all flex items-center space-x-1">
-              <span>⚡</span>
-              <span>进入执行工作台</span>
-            </button>
+            <!-- 极简进度条 -->
+            <div class="w-32 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden mt-1.5">
+              <div class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: ${percent}%;"></div>
+            </div>
           </div>
+
+          <button id="go-today-action-btn" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-semibold text-xs transition-all shadow-sm shrink-0">
+            进入执行工作台 →
+          </button>
         </div>
       </div>
 
-      <!-- 快速跳转大表与工具 -->
-      <div class="mt-6 pt-5 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-xs">
-        <span class="text-slate-400">快速导航：</span>
+      <!-- 快捷入口索引 -->
+      <div class="mt-5 pt-4 border-t border-slate-100 dark:border-slate-700/60 flex flex-wrap items-center justify-between gap-3 text-xs">
+        <span class="text-slate-400 font-medium">快速导航</span>
         <div class="flex flex-wrap items-center gap-2">
-          <button id="btn-quick-timetable" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition-all flex items-center space-x-1.5">
-            <span>🎓</span>
-            <span>7天×14时段 全景大课表</span>
+          <button id="btn-quick-timetable" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-all">
+            7天×14时段 全景大课表
           </button>
-          <button id="btn-quick-plans" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition-all flex items-center space-x-1.5">
-            <span>📋</span>
-            <span>全域计划规程库</span>
+          <button id="btn-quick-plans" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-all">
+            全域计划规程库
           </button>
-          <button id="btn-quick-tools" class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold transition-all flex items-center space-x-1.5">
-            <span>🧰</span>
-            <span>效率与健康工具箱</span>
+          <button id="btn-quick-tools" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-700/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium transition-all">
+            效率与健康工具箱
           </button>
         </div>
       </div>
     </div>
 
     <!-- 2. 全域计划五大核心细分专区 (Domain Portals) -->
-    <div class="space-y-4">
+    <div class="space-y-3.5">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white flex items-center space-x-2">
-            <span>🗂️</span>
-            <span>全域计划分类矩阵</span>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white">
+            计划分类中心
           </h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">健康饮食、健身运动、科研攻坚均为一级平行规划模块</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400">各领域独立规划与执行流，互不干扰</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-        <!-- 专区 1：科研与实验室攻坚 -->
-        <div class="group bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all space-y-3.5 flex flex-col justify-between">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- 专区 1：学术科研与实验室攻坚 -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/90 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 transition-all flex flex-col justify-between space-y-4 shadow-sm">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-300 flex items-center justify-center text-lg font-bold">
-                🧪
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md border ${trackStats.research.tagClass}">
+                学术科研
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                今日 ${trackStats.research.done}/${trackStats.research.total}
+              <span class="text-xs text-slate-400 font-medium">
+                ${trackStats.research.done}/${trackStats.research.total} 已完成
               </span>
             </div>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">
-              学术科研与实验室攻坚
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">
+              实验室工位科研攻坚
             </h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              工位坐班模式、实验排期流、顶会精读、大论文攻坚与组会汇报规程，避免陷入被动救火。
+              工位坐班模式、实验排期推进、文献精读归档、大论文撰写与组会汇报备忘。
             </p>
           </div>
-          <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
-            <button data-action="plan" data-sub="mental_plan" class="text-indigo-600 dark:text-indigo-400 font-bold hover:underline">
-              查看科研抗压规程 ➜
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
+            <button data-action="plan" data-sub="research_plan" class="text-slate-900 dark:text-slate-100 font-semibold hover:underline">
+              查看科研规程 →
             </button>
-            <button data-action="daily-filter" data-track="research" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 font-bold hover:bg-slate-200 text-slate-700 dark:text-slate-200">
+            <button data-action="daily-filter" data-track="research" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700/80 hover:bg-slate-200 dark:hover:bg-slate-700 font-medium text-slate-700 dark:text-slate-200">
               今日待办
             </button>
           </div>
         </div>
 
         <!-- 专区 2：科学营养与控糖饮食 -->
-        <div class="group bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all space-y-3.5 flex flex-col justify-between">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/90 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 transition-all flex flex-col justify-between space-y-4 shadow-sm">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center text-lg font-bold">
-                🥗
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md border ${trackStats.diet.tagClass}">
+                营养饮食
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-                今日 ${trackStats.diet.done}/${trackStats.diet.total}
+              <span class="text-xs text-slate-400 font-medium">
+                ${trackStats.diet.done}/${trackStats.diet.total} 已完成
               </span>
             </div>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 transition-colors">
-              科学营养与控糖饮食
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">
+              科学控糖饮食体系
             </h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              早中晚加餐定量标配、1:1自由平替备选库、食堂避坑指南、周日特调与微量营养补剂方案。
+              早中晚四餐定量标配、1:1自由平替备选库、高校食堂控油避坑与微量补剂方案。
             </p>
           </div>
-          <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
-            <button data-action="plan" data-sub="diet_plan" class="text-emerald-600 dark:text-emerald-400 font-bold hover:underline">
-              查看四餐饮食方案 ➜
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
+            <button data-action="plan" data-sub="diet_plan" class="text-slate-900 dark:text-slate-100 font-semibold hover:underline">
+              查看四餐饮食方案 →
             </button>
-            <button data-action="tool" data-sub="substitute_tool" class="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold hover:bg-emerald-100">
-              1:1平替计算
+            <button data-action="tool" data-sub="substitute_tool" class="px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 font-medium">
+              平替计算器
             </button>
           </div>
         </div>
 
         <!-- 专区 3：体能健身与运动爱好 -->
-        <div class="group bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all space-y-3.5 flex flex-col justify-between">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/90 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 transition-all flex flex-col justify-between space-y-4 shadow-sm">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-300 flex items-center justify-center text-lg font-bold">
-                🏃
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md border ${trackStats.exercise.tagClass}">
+                体能羽球
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
-                今日 ${trackStats.exercise.done}/${trackStats.exercise.total}
+              <span class="text-xs text-slate-400 font-medium">
+                ${trackStats.exercise.done}/${trackStats.exercise.total} 已完成
               </span>
             </div>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-amber-600 transition-colors">
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">
               体能健身与羽球爱好
             </h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              3+2抗阻体能循环（周一三五力量）、周二四操场4公里慢跑、周末羽毛球球友局专项防伤。
+              3+2抗阻体能周课表（周一三五力量）、周二四操场4公里慢跑、周末羽毛球球友局与防伤。
             </p>
           </div>
-          <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
-            <button data-action="plan" data-sub="fitness_plan" class="text-amber-600 dark:text-amber-400 font-bold hover:underline">
-              查看3+2体能课表 ➜
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
+            <button data-action="plan" data-sub="fitness_plan" class="text-slate-900 dark:text-slate-100 font-semibold hover:underline">
+              查看3+2体能课表 →
             </button>
-            <button data-action="daily-filter" data-track="exercise" class="px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300 font-bold hover:bg-amber-100">
+            <button data-action="daily-filter" data-track="exercise" class="px-2.5 py-1 rounded-lg bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 text-amber-700 dark:text-amber-300 font-medium">
               运动打卡
             </button>
           </div>
         </div>
 
         <!-- 专区 4：个人进阶与技能提升 -->
-        <div class="group bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all space-y-3.5 flex flex-col justify-between">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/90 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 transition-all flex flex-col justify-between space-y-4 shadow-sm">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-300 flex items-center justify-center text-lg font-bold">
-                📚
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md border ${trackStats.growth.tagClass}">
+                个人进阶
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-                今日 ${trackStats.growth.done}/${trackStats.growth.total}
+              <span class="text-xs text-slate-400 font-medium">
+                ${trackStats.growth.done}/${trackStats.growth.total} 已完成
               </span>
             </div>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">
-              个人进阶与技能提升
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">
+              技能提升与自学进阶
             </h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              每日学术外刊精读、代码架构实操演练、综合技能跃迁与深度复盘笔记，打造长期复利。
+              每日学术外刊精读、系统代码工程实操、深度技能构建与复盘笔记，打造长期复利。
             </p>
           </div>
-          <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
-            <button data-action="daily-filter" data-track="growth" class="text-blue-600 dark:text-blue-400 font-bold hover:underline">
-              查看今日提升任务 ➜
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
+            <button data-action="daily-filter" data-track="growth" class="text-slate-900 dark:text-slate-100 font-semibold hover:underline">
+              今日提升任务 →
             </button>
-            <button data-action="daily-filter" data-track="growth" class="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-bold hover:bg-blue-100">
+            <button data-action="daily-filter" data-track="growth" class="px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-950/60 hover:bg-blue-100 text-blue-700 dark:text-blue-300 font-medium">
               打卡记录
             </button>
           </div>
         </div>
 
         <!-- 专区 5：工位作息与身心精力 -->
-        <div class="group bg-white dark:bg-slate-800 rounded-3xl p-5 border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-all space-y-3.5 flex flex-col justify-between">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/90 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 transition-all flex flex-col justify-between space-y-4 shadow-sm">
           <div class="space-y-2">
             <div class="flex items-center justify-between">
-              <span class="w-10 h-10 rounded-2xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-300 flex items-center justify-center text-lg font-bold">
-                ⏰
+              <span class="text-xs font-semibold px-2 py-0.5 rounded-md border ${trackStats.routine.tagClass}">
+                工位作息
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
-                今日 ${trackStats.routine.done}/${trackStats.routine.total}
+              <span class="text-xs text-slate-400 font-medium">
+                ${trackStats.routine.done}/${trackStats.routine.total} 已完成
               </span>
             </div>
-            <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-rose-600 transition-colors">
-              工位作息与精力管理
+            <h4 class="text-sm font-bold text-slate-900 dark:text-white">
+              工位健康与精力管理
             </h4>
             <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              45分钟工位久坐微拉伸、90分钟睡眠节律、2000ml分段补水与4-7-8迷走神经呼吸训练。
+              45分钟工位久坐微拉伸防瘫、90分钟睡眠节律、2000ml分段补水与4-7-8迷走神经呼吸训练。
             </p>
           </div>
-          <div class="pt-2 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
-            <button data-action="tool" data-sub="desk_timer_tool" class="text-rose-600 dark:text-rose-400 font-bold hover:underline">
-              久坐拉伸番茄钟 ➜
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
+            <button data-action="tool" data-sub="desk_timer_tool" class="text-slate-900 dark:text-slate-100 font-semibold hover:underline">
+              久坐番茄钟 →
             </button>
-            <button data-action="tool" data-sub="water_tool" class="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-700 dark:text-rose-300 font-bold hover:bg-rose-100">
+            <button data-action="tool" data-sub="water_tool" class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 text-slate-700 dark:text-slate-200 font-medium">
               分段饮水
             </button>
           </div>
