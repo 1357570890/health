@@ -18,7 +18,7 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
     const info = syncService.getStatus();
     if (!info.isConfigured) {
       return `
-        <button id="nav-sync-btn" title="点击配置手机与电脑跨端云同步" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-all">
+        <button id="nav-sync-btn" title="点击配置手机与电脑跨端云同步" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-all whitespace-nowrap shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
           <span>未联云</span>
         </button>
@@ -26,14 +26,14 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
     }
     if (info.status === "syncing") {
       return `
-        <button id="nav-sync-btn" title="正在与云端双向同步..." class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-300 border border-sky-300 dark:border-sky-800 transition-all">
+        <button id="nav-sync-btn" title="正在与云端双向同步..." class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-300 border border-sky-300 dark:border-sky-800 transition-all whitespace-nowrap shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse"></span>
           <span>同步中</span>
         </button>
       `;
     }
     return `
-      <button id="nav-sync-btn" title="跨端实时同步就绪 (上次同步: ${info.lastSyncTime || "刚刚"})" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 transition-all">
+      <button id="nav-sync-btn" title="跨端实时同步就绪 (上次同步: ${info.lastSyncTime || "刚刚"})" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 transition-all whitespace-nowrap shrink-0">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
         <span>已同步</span>
       </button>
@@ -81,17 +81,17 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
           </div>
 
           <!-- 右侧控件：工位偏好设置 + 跨端云同步状态 + 主题切换 -->
-          <div class="flex items-center space-x-1.5 sm:space-x-2">
+          <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
             <button
               id="nav-profile-btn"
               title="个人工位偏好与生活画像设置"
-              class="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition-all"
+              class="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition-all whitespace-nowrap shrink-0"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-              <span class="hidden sm:inline">工位偏好</span>
+              <span>工位偏好</span>
             </button>
 
-            <div id="sync-badge-container">${getSyncBadgeHtml()}</div>
+            <div id="sync-badge-container" class="shrink-0">${getSyncBadgeHtml()}</div>
 
             <button
               id="theme-toggle"
