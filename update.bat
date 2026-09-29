@@ -6,25 +6,23 @@ set "BASE_DIR=%~dp0"
 cd /d "%BASE_DIR%"
 
 echo ==================================================
-echo 🚀 研途生活健康中枢 - GitHub Pages 部署与更新
+echo 🚀 研途生活健康中枢 - 一键更新部署至 GitHub Pages
 echo ==================================================
-echo 专属公网地址：https://1357570890.github.io/health/
 echo.
-
 git status -s
 echo.
-
-git add .
-set /p COMMIT_MSG="请输入更新备注 (直接回车将使用当前时间): "
+set /p COMMIT_MSG="请输入更新备注 (直接回车将使用当前时间自动提交): "
 if "%COMMIT_MSG%"=="" set "COMMIT_MSG=update: %date% %time%"
 
+git add .
 git commit -m "%COMMIT_MSG%"
 git push origin main
 
 echo.
 echo ==================================================
-echo 🎉 推送完成！GitHub Pages 将在20~30秒内自动刷新生效。
-echo 手机/电脑访问地址：https://1357570890.github.io/health/
+echo 🎉 最新版本已成功推送！
+echo 预计20~30秒内全球自动生效更新：
+echo 🔗 https://1357570890.github.io/health/
 echo ==================================================
 echo.
 pause
