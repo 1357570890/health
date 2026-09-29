@@ -110,16 +110,14 @@ class App {
       case "plans":
         contentArea.appendChild(
           renderPlanContainer(this.activePlanId, (planId) => {
-            this.activePlanId = planId;
-            this.renderMainContent();
+            this.navigate("plans", planId);
           })
         );
         break;
       case "tools":
         contentArea.appendChild(
           renderToolContainer(this.activeToolId, (toolId) => {
-            this.activeToolId = toolId;
-            this.renderMainContent();
+            this.navigate("tools", toolId);
           })
         );
         break;

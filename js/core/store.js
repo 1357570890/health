@@ -128,23 +128,25 @@ class Store {
 
   addTask(task, targetDate = this.selectedDate) {
     this.ensureDateTasks(targetDate);
+    const isWork = task.category === "research" || task.category === "work";
     const newTask = {
       id: `custom_${Date.now()}`,
       time: task.time || "全天随时",
-      label: task.label || "临时任务",
+      label: task.label || (isWork ? "本职工作" : "生活规划"),
       title: task.title,
-      category: task.category || "research",
+      category: task.category || (isWork ? "work" : "habit"),
       isFixed: false,
       completed: false,
-      details: task.details || "手动添加的待办",
+      details: task.details || "待办事项",
       brief: task.brief || "",
-      badge: task.badge || "自建任务",
+      badge: task.badge || (isWork ? "核心职责" : "自律日常"),
       sub: "",
       tips: ""
     };
     this.tasksByDate[targetDate].push(newTask);
     this.saveTasks();
     this.emit("tasksChanged", this.tasksByDate[targetDate]);
+    this.emit("stateChanged", null);
     return newTask;
   }
 
@@ -154,6 +156,7 @@ class Store {
     this.tasksByDate[targetDate] = list.map((item) => (item.id === taskId ? { ...item, ...updates } : item));
     this.saveTasks();
     this.emit("tasksChanged", this.tasksByDate[targetDate]);
+    this.emit("stateChanged", null);
   }
 
   deleteTask(taskId, targetDate = this.selectedDate) {
@@ -162,6 +165,7 @@ class Store {
     this.tasksByDate[targetDate] = list.filter((item) => item.id !== taskId);
     this.saveTasks();
     this.emit("tasksChanged", this.tasksByDate[targetDate]);
+    this.emit("stateChanged", null);
   }
 
   toggleTask(taskId, targetDate = this.selectedDate) {
@@ -170,6 +174,7 @@ class Store {
     this.tasksByDate[targetDate] = list.map((item) => (item.id === taskId ? { ...item, completed: !item.completed } : item));
     this.saveTasks();
     this.emit("tasksChanged", this.tasksByDate[targetDate]);
+    this.emit("stateChanged", null);
   }
 
   resetDateToBaseline(targetDate = this.selectedDate) {
