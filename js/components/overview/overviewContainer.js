@@ -1,13 +1,13 @@
 // 全域计划归类与总览中枢容器 (Master Planning Overview & Domain Portals)
 import { store } from "../../core/store.js";
-import { getTodayString } from "../../core/utils.js";
+import { getTodayKey, getTodayDisplay } from "../../core/utils.js";
 import { PLANS_REGISTRY, TOOLS_REGISTRY } from "../../data/registry.js";
 
 export function renderOverviewContainer(onNavigate) {
   const container = document.createElement("div");
   container.className = "space-y-6 sm:space-y-8 animate-in fade-in duration-200";
 
-  const todayStr = getTodayString();
+  const todayStr = getTodayKey();
   const tasks = store.getTasksForDate(todayStr);
   const totalCount = tasks.length;
   const doneCount = tasks.filter((t) => t.completed).length;
@@ -44,7 +44,7 @@ export function renderOverviewContainer(onNavigate) {
             <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
               🧭 研途全域规划中枢 · 总控看板
             </span>
-            <span class="text-xs text-slate-400 font-mono">${todayStr} ${weekDayName}</span>
+            <span class="text-xs text-slate-400 font-mono">${getTodayDisplay()}</span>
           </div>
           <h2 class="text-2xl sm:text-3xl font-black tracking-tight text-white">
             今日全域规划执行总览

@@ -7,6 +7,8 @@ export function getTodayKey() {
   return `${year}-${month}-${date}`;
 }
 
+export const getTodayString = getTodayKey;
+
 export function getTodayDisplay() {
   const now = new Date();
   const year = now.getFullYear();
