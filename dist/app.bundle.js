@@ -203,17 +203,17 @@ function L(){let t=new Date,e=t.getFullYear(),s=String(t.getMonth()+1).padStart(
       </form>
     </div>
   `;let s=()=>t.remove();return t.querySelector("#close-profile-btn")?.addEventListener("click",s),t.querySelector("#cancel-profile-btn")?.addEventListener("click",s),t.addEventListener("click",a=>{a.target===t&&s()}),t.querySelector("#profile-form")?.addEventListener("submit",a=>{a.preventDefault();let l=t.querySelector("#prof-stage").value.trim(),d=t.querySelector("#prof-protein").value,i=t.querySelector("#prof-coffee-cutoff").value.trim(),o=t.querySelector("#prof-fasting-cutoff").value.trim(),c=t.querySelector("#prof-run-distance").value.trim(),g=t.querySelector("#prof-badminton-duration").value.trim(),k=t.querySelector("#prof-water-target").value.trim(),p=t.querySelector("#prof-sleep-time").value.trim();n.updateUserProfile({stage:l,diet:{...e.diet,lunchProtein:d,coffeeCutoff:i,fastingCutoff:o},exercise:{...e.exercise,runDistanceKm:c,badmintonDuration:g},routine:{...e.routine,waterDaily:k,sleepTarget:p}}),y.isConfigured()&&y.pushToCloud(),x(784,.15),s()}),t}function ee(t,e,s){let r=document.createElement("div"),a=[{id:"overview",label:"\u603B\u89C8",shortLabel:"\u603B\u89C8"},{id:"daily",label:"\u4ECA\u65E5\u6267\u884C",shortLabel:"\u6267\u884C"},{id:"timetable",label:"\u65E5\u7A0B\u8BFE\u8868",shortLabel:"\u8BFE\u8868"},{id:"plans",label:"\u89C4\u7A0B\u624B\u518C",shortLabel:"\u624B\u518C"},{id:"tools",label:"\u5DE5\u5177\u7BB1",shortLabel:"\u5DE5\u5177"}];function l(){let c=y.getStatus();return c.isConfigured?c.status==="syncing"?`
-        <button id="nav-sync-btn" title="\u6B63\u5728\u4E0E\u4E91\u7AEF\u53CC\u5411\u540C\u6B65..." class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-300 border border-sky-300 dark:border-sky-800 transition-all whitespace-nowrap shrink-0">
+        <button id="nav-sync-btn" title="\u6B63\u5728\u4E0E\u4E91\u7AEF\u53CC\u5411\u540C\u6B65..." class="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-sky-50 dark:bg-sky-950/40 text-sky-600 dark:text-sky-300 border border-sky-300 dark:border-sky-800 transition-all whitespace-nowrap shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-sky-500 animate-pulse"></span>
           <span>\u540C\u6B65\u4E2D</span>
         </button>
       `:`
-      <button id="nav-sync-btn" title="\u8DE8\u7AEF\u5B9E\u65F6\u540C\u6B65\u5C31\u7EEA (\u4E0A\u6B21\u540C\u6B65: ${c.lastSyncTime||"\u521A\u521A"})" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 transition-all whitespace-nowrap shrink-0">
+      <button id="nav-sync-btn" title="\u8DE8\u7AEF\u5B9E\u65F6\u540C\u6B65\u5C31\u7EEA (\u4E0A\u6B21\u540C\u6B65: ${c.lastSyncTime||"\u521A\u521A"})" class="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 transition-all whitespace-nowrap shrink-0">
         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
         <span>\u5DF2\u540C\u6B65</span>
       </button>
     `:`
-        <button id="nav-sync-btn" title="\u70B9\u51FB\u914D\u7F6E\u624B\u673A\u4E0E\u7535\u8111\u8DE8\u7AEF\u4E91\u540C\u6B65" class="flex items-center space-x-1.5 px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-all whitespace-nowrap shrink-0">
+        <button id="nav-sync-btn" title="\u70B9\u51FB\u914D\u7F6E\u624B\u673A\u4E0E\u7535\u8111\u8DE8\u7AEF\u4E91\u540C\u6B65" class="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 transition-all whitespace-nowrap shrink-0">
           <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
           <span>\u672A\u8054\u4E91</span>
         </button>
@@ -223,7 +223,7 @@ function L(){let t=new Date,e=t.getFullYear(),s=String(t.getMonth()+1).padStart(
       <div class="max-w-7xl mx-auto px-3 sm:px-6">
         <div class="py-2.5 flex items-center justify-between gap-3">
           <!-- \u54C1\u724C\u6807\u8BC6 -->
-          <div class="flex items-center space-x-2.5 cursor-pointer" id="brand-logo">
+          <div class="flex items-center space-x-2.5 cursor-pointer shrink-0" id="brand-logo">
             <div class="w-8 h-8 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 flex items-center justify-center font-bold text-xs tracking-wider shadow-sm">
               GP
             </div>
@@ -249,11 +249,11 @@ function L(){let t=new Date,e=t.getFullYear(),s=String(t.getMonth()+1).padStart(
           </div>
 
           <!-- \u53F3\u4FA7\u63A7\u4EF6\uFF1A\u5DE5\u4F4D\u504F\u597D\u8BBE\u7F6E + \u8DE8\u7AEF\u4E91\u540C\u6B65\u72B6\u6001 + \u4E3B\u9898\u5207\u6362 -->
-          <div class="flex items-center space-x-1.5 sm:space-x-2 shrink-0">
+          <div class="flex items-center space-x-2 shrink-0">
             <button
               id="nav-profile-btn"
               title="\u4E2A\u4EBA\u5DE5\u4F4D\u504F\u597D\u4E0E\u751F\u6D3B\u753B\u50CF\u8BBE\u7F6E"
-              class="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition-all whitespace-nowrap shrink-0"
+              class="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition-all whitespace-nowrap shrink-0"
             >
               <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
               <span>\u5DE5\u4F4D\u504F\u597D</span>
