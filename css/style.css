@@ -23,6 +23,23 @@ html, body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+/* SVG 尺寸固化防护 (杜绝未显式定义时的自然撑大) */
+svg {
+  flex-shrink: 0;
+}
+svg.w-3\.5, svg.h-3\.5 {
+  width: 14px;
+  height: 14px;
+}
+svg.w-4, svg.h-4 {
+  width: 16px;
+  height: 16px;
+}
+svg.w-5, svg.h-5 {
+  width: 20px;
+  height: 20px;
+}
+
 /* 呼吸动画阴影 */
 @keyframes breathGlow {
   0%, 100% {
