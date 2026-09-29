@@ -2,20 +2,29 @@
 // 方便未来无限横向扩充生活健康各维度的“长期计划”与“执行工具”
 
 export const PLAN_CATEGORIES = [
-  { id: "all", label: "全部计划" },
+  { id: "all", label: "全部全域计划" },
+  { id: "research", label: "学术与科研" },
   { id: "nutrition", label: "饮食与营养" },
-  { id: "body", label: "体能与体态" },
-  { id: "sleep", label: "作息与精力" },
-  { id: "mind", label: "心理与抗压" }
+  { id: "body", label: "体能与羽球" },
+  { id: "routine", label: "工位与作息" },
+  { id: "mind", label: "心智与抗压" }
 ];
 
 export const PLANS_REGISTRY = [
+  {
+    id: "research_plan",
+    category: "research",
+    title: "研究生学术攻坚与工位节奏规程",
+    icon: "🧪",
+    badge: "学业核心",
+    summary: "工位坐班类工作制节奏、文献精读、实验推进与组会汇报全周期规划。"
+  },
   {
     id: "diet_plan",
     category: "nutrition",
     title: "控糖减脂饮食总方案",
     icon: "🥗",
-    badge: "核心基石",
+    badge: "健康基石",
     summary: "四餐定时定量、1:1自由替换与高校食堂生存避坑全手册。"
   },
   {

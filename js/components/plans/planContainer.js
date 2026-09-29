@@ -67,6 +67,8 @@ export function renderPlanContainer(currentPlanId = "diet_plan", onSelectPlan) {
 
 function renderPlanBody(planId) {
   switch (planId) {
+    case "research_plan":
+      return renderResearchPlanContent();
     case "diet_plan":
       return renderDietPlanContent();
     case "supplement_plan":
@@ -80,8 +82,63 @@ function renderPlanBody(planId) {
     case "mental_plan":
       return renderMentalPlanContent();
     default:
-      return renderDietPlanContent();
+      return renderResearchPlanContent();
   }
+}
+
+// 0. 学术科研攻坚规划
+function renderResearchPlanContent() {
+  return `
+    <div class="space-y-4">
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+        <div class="flex items-center space-x-2 border-b border-slate-100 dark:border-slate-700 pb-3">
+          <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">实验室工位坐班作息法则（类上班工作制）</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-750 border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
+            <span class="font-bold text-indigo-600 dark:text-indigo-400 block">⏰ 上午攻坚黄金期 (9:00~11:30)</span>
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+              到工位后严禁刷手机或处理杂务，直奔当日最硬核任务：算法推导、核心代码攻坚或主力实验执行。
+            </p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-750 border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
+            <span class="font-bold text-indigo-600 dark:text-indigo-400 block">📊 下午琐碎与文献期 (14:00~17:30)</span>
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+              午休唤醒后，开展低心智负荷任务：实验数据清洗制图、文献精读笔记、报账或组会材料起草。
+            </p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-750 border border-slate-200/60 dark:border-slate-700/60 space-y-1.5">
+            <span class="font-bold text-indigo-600 dark:text-indigo-400 block">🌙 晚间复盘与进阶期 (19:30~22:00)</span>
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+              运动归来后，进行当日实验日志归档、代码版本提交（Git Commit）与明日高优先级任务排期。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm space-y-4">
+        <div class="flex items-center space-x-2 border-b border-slate-100 dark:border-slate-700 pb-3">
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">组会汇报与导师协同规程</h3>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/60 dark:border-emerald-800/40 space-y-1">
+            <span class="font-bold text-emerald-800 dark:text-emerald-300">✅ 汇报铁律：结论先行 + 备选方案</span>
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+              先说进度结论与遇到卡点，严禁长篇流水账；遇到难题时必须携带2个预案供导师决策，而非抛出真空问题。
+            </p>
+          </div>
+          <div class="p-3 rounded-xl bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/60 dark:border-emerald-800/40 space-y-1">
+            <span class="font-bold text-emerald-800 dark:text-emerald-300">✅ 情绪隔离：事实对事，绝不对人</span>
+            <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+              导师情绪化批评时，启动“客观事实过滤网”，仅提取学术建议与修改要求，严禁内耗和当场辩解。
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 // 1. 饮食规划

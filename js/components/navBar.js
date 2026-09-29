@@ -6,9 +6,10 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
   const container = document.createElement("div");
 
   const navModes = [
-    { id: "daily", label: "今日全天", shortLabel: "今日", icon: "⚡" },
-    { id: "timetable", label: "健康大课表", shortLabel: "课表", icon: "🎓" },
-    { id: "plans", label: "计划规程库", shortLabel: "计划", icon: "📋" },
+    { id: "overview", label: "总览中枢", shortLabel: "总览", icon: "🧭" },
+    { id: "daily", label: "今日行动", shortLabel: "今日", icon: "⚡" },
+    { id: "timetable", label: "日程大课表", shortLabel: "课表", icon: "🎓" },
+    { id: "plans", label: "全域计划库", shortLabel: "计划", icon: "📋" },
     { id: "tools", label: "辅助工具箱", shortLabel: "工具", icon: "🧰" }
   ];
 
@@ -45,10 +46,10 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
         <div class="py-2.5 sm:py-3 flex items-center justify-between gap-2">
           <!-- 品牌标识 -->
           <div class="flex items-center space-x-2.5 cursor-pointer" id="brand-logo">
-            <span class="text-xl sm:text-2xl select-none">🔬</span>
+            <span class="text-xl sm:text-2xl select-none">🧭</span>
             <div>
-              <h1 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-tight">研途生活健康中枢</h1>
-              <p class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400">高校工位自律与健康管理系统</p>
+              <h1 class="text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-tight">研途全域规划中枢</h1>
+              <p class="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400">研究生科研与生活自律综合中枢</p>
             </div>
           </div>
 
@@ -125,7 +126,7 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
     btn.addEventListener("click", () => handleNav(btn.getAttribute("data-mode")));
   });
 
-  container.querySelector("#brand-logo")?.addEventListener("click", () => handleNav("daily"));
+  container.querySelector("#brand-logo")?.addEventListener("click", () => handleNav("overview"));
 
   // 打开云同步弹窗
   const attachSyncClick = () => {

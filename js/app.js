@@ -1,5 +1,5 @@
-// 研途生活健康主控制器：四维联动（今日工作台、全景大课表、长期规程库、辅助工具箱）
 import { renderNavBar } from "./components/navBar.js";
+import { renderOverviewContainer } from "./components/overview/overviewContainer.js";
 import { renderDailyContainer } from "./components/daily/dailyContainer.js";
 import { renderTimetableContainer } from "./components/timetable/timetableContainer.js";
 import { renderPlanContainer } from "./components/plans/planContainer.js";
@@ -10,8 +10,8 @@ import { playGentleChime } from "./core/utils.js";
 
 class App {
   constructor() {
-    // 默认展示今日全天行动工作台，直达每日执行闭环
-    this.activeMode = "daily"; // 'daily' | 'timetable' | 'plans' | 'tools'
+    // 默认展示全域规划总览中枢，总揽全局与分类导航
+    this.activeMode = "overview"; // 'overview' | 'daily' | 'timetable' | 'plans' | 'tools'
     this.activePlanId = "diet_plan";
     this.activeToolId = "tracker_tool";
 
@@ -73,6 +73,9 @@ class App {
     contentArea.innerHTML = "";
 
     switch (this.activeMode) {
+      case "overview":
+        contentArea.appendChild(renderOverviewContainer((mode, subId) => this.navigate(mode, subId)));
+        break;
       case "daily":
         contentArea.appendChild(renderDailyContainer());
         break;
@@ -96,7 +99,7 @@ class App {
         );
         break;
       default:
-        contentArea.appendChild(renderDailyContainer());
+        contentArea.appendChild(renderOverviewContainer((mode, subId) => this.navigate(mode, subId)));
     }
   }
 
