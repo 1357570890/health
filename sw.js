@@ -1,5 +1,5 @@
-// 研途规划 Service Worker：毫秒级离线极速直出 (Cache-First & Stale-While-Revalidate)
-const CACHE_NAME = "grad-plan-static-v1";
+// 研途规划 Service Worker：毫秒级离线极速直出 (Network-First for HTML, Stale-While-Revalidate for Assets)
+const CACHE_NAME = "grad-plan-static-v2";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
@@ -32,11 +32,27 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  // 忽略非 GET 请求或外部 API 请求
   if (event.request.method !== "GET") return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
 
+  // 1. 页面导航请求：优先请求最新网络，离线时回退到缓存
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const copy = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+          }
+          return networkResponse;
+        })
+        .catch(() => caches.match(event.request).then((res) => res || caches.match("./index.html")))
+    );
+    return;
+  }
+
+  // 2. 静态静态资源 (JS/CSS/字体)：缓存优先 + 异步更新 (0ms 瞬时加载)
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       const fetchPromise = fetch(event.request).then((networkResponse) => {
@@ -47,12 +63,8 @@ self.addEventListener("fetch", (event) => {
           });
         }
         return networkResponse;
-      }).catch(() => {
-        // 离线状态回退
-        return cachedResponse;
-      });
+      }).catch(() => cachedResponse);
 
-      // 命中缓存则立刻 0ms 返回，后台静默更新
       return cachedResponse || fetchPromise;
     })
   );
