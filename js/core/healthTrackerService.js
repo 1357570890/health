@@ -10,6 +10,16 @@ class HealthTrackerService {
     this.weightLogs = this.loadWeightLogs();
     this.foodLogs = this.loadFoodLogs();
     this.listeners = new Map();
+
+    // 当从云端拉取或备份导入时，自动重新对齐最新数据
+    store.subscribe("tasksChanged", () => this.reloadFromStorage());
+  }
+
+  reloadFromStorage() {
+    this.weightLogs = this.loadWeightLogs();
+    this.foodLogs = this.loadFoodLogs();
+    this.emit("weightChanged", this.weightLogs);
+    this.emit("foodLogsChanged", this.foodLogs);
   }
 
   loadWeightLogs() {
