@@ -1,7 +1,9 @@
 // 响应式导航栏组件：电脑端顶部导航 + 手机端专属底部Dock导航 + 跨端云同步状态按钮
+import { store } from "../core/store.js";
 import { syncService } from "../core/syncService.js";
 import { renderSyncModal } from "./sync/syncModal.js";
 import { renderProfileModal } from "./profile/profileModal.js";
+import { renderInventoryModal } from "./inventory/inventoryModal.js";
 
 export function renderNavBar(activeMode, activeSubId, onNavigate) {
   const container = document.createElement("div");
@@ -13,6 +15,8 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
     { id: "plans", label: "规程手册", shortLabel: "手册" },
     { id: "tools", label: "工具箱", shortLabel: "工具" }
   ];
+
+  const lowStockCount = store.getLowStockItems().length;
 
   function getSyncBadgeHtml() {
     const info = syncService.getStatus();
@@ -80,8 +84,18 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
               .join("")}
           </div>
 
-          <!-- 右侧控件：工位偏好设置 + 跨端云同步状态 + 主题切换 -->
+          <!-- 右侧控件：食材储备 + 工位偏好设置 + 跨端云同步状态 + 主题切换 -->
           <div class="flex items-center space-x-2 shrink-0">
+            <button
+              id="nav-inventory-btn"
+              title="常吃食材储备与补货提醒"
+              class="inline-flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition-all whitespace-nowrap shrink-0"
+            >
+              <span>🛒</span>
+              <span class="hidden md:inline">食材储备</span>
+              ${lowStockCount > 0 ? `<span class="px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold">${lowStockCount}</span>` : ""}
+            </button>
+
             <button
               id="nav-profile-btn"
               title="个人工位偏好与生活画像设置"
@@ -155,6 +169,11 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
   container.querySelector("#nav-profile-btn")?.addEventListener("click", () => {
     const modal = renderProfileModal();
     document.body.appendChild(modal);
+  });
+
+  // 打开常吃食材与补货弹窗
+  container.querySelector("#nav-inventory-btn")?.addEventListener("click", () => {
+    renderInventoryModal();
   });
 
   // 监听云同步状态变动更新右上角徽章

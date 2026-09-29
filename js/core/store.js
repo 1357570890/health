@@ -6,6 +6,19 @@ const RECORDS_STORAGE_KEY = "grad_health_hub_records_v1";
 const TASKS_STORAGE_KEY = "grad_health_hub_daily_tasks_v1";
 const PRESETS_STORAGE_KEY = "grad_health_hub_quick_presets_v1";
 const PROFILE_STORAGE_KEY = "grad_plan_user_profile_v1";
+const INVENTORY_STORAGE_KEY = "grad_plan_inventory_v1";
+
+export const DEFAULT_INVENTORY = [
+  { id: "inv_egg", name: "水煮蛋 / 鲜鸡蛋", category: "优质蛋白", stock: 12, unit: "个", threshold: 4, dailyUsage: 2, icon: "🥚" },
+  { id: "inv_bread", name: "全黑麦面包 / 谷物切片", category: "健康主食", stock: 8, unit: "片", threshold: 3, dailyUsage: 2, icon: "🍞" },
+  { id: "inv_milk", name: "低脂纯牛奶 (250ml)", category: "乳品饮品", stock: 6, unit: "盒", threshold: 3, dailyUsage: 1, icon: "🥛" },
+  { id: "inv_chicken", name: "即食鸡胸肉 (100g)", category: "优质蛋白", stock: 7, unit: "袋", threshold: 2, dailyUsage: 1, icon: "🍗" },
+  { id: "inv_cucumber", name: "生脆黄瓜 / 鲜果蔬", category: "轻食果蔬", stock: 4, unit: "根", threshold: 2, dailyUsage: 1, icon: "🥒" },
+  { id: "inv_coffee", name: "纯黑咖啡 / 冻干条", category: "工位补给", stock: 15, unit: "条", threshold: 5, dailyUsage: 1, icon: "☕" },
+  { id: "inv_vit_d3", name: "维生素D3 (1000~2000IU)", category: "核心补剂", stock: 40, unit: "粒", threshold: 10, dailyUsage: 1, icon: "💊" },
+  { id: "inv_fish_oil", name: "高纯Omega-3深海鱼油", category: "核心补剂", stock: 35, unit: "粒", threshold: 10, dailyUsage: 1, icon: "🐟" },
+  { id: "inv_magnesium", name: "甘氨酸镁 (晚间安睡)", category: "核心补剂", stock: 25, unit: "粒", threshold: 7, dailyUsage: 1, icon: "🌙" }
+];
 
 export const DEFAULT_PROFILE = {
   stage: "专注工作与工位自律模式",
@@ -50,6 +63,7 @@ class Store {
     this.tasksByDate = this.loadTasks();
     this.presets = this.loadPresets();
     this.profile = this.loadProfile();
+    this.inventory = this.loadInventory();
     this.selectedDate = getTodayKey();
     this.ensureDateTasks(this.selectedDate);
   }
@@ -241,6 +255,74 @@ class Store {
     this.emit("presetsChanged", this.presets);
   }
 
+  // --- 食材储备与补货管理 ---
+  loadInventory() {
+    const raw = localStorage.getItem(INVENTORY_STORAGE_KEY);
+    return safeJsonParse(raw, DEFAULT_INVENTORY);
+  }
+
+  saveInventory() {
+    localStorage.setItem(INVENTORY_STORAGE_KEY, JSON.stringify(this.inventory));
+  }
+
+  getInventory() {
+    return [...this.inventory];
+  }
+
+  getLowStockItems() {
+    return this.inventory.filter((item) => Number(item.stock) <= Number(item.threshold));
+  }
+
+  consumeInventory(id, amount = 1) {
+    const item = this.inventory.find((i) => i.id === id);
+    if (!item) return null;
+    item.stock = Math.max(0, Number(item.stock) - Number(amount));
+    this.saveInventory();
+    this.emit("inventoryChanged", this.inventory);
+    return item;
+  }
+
+  restockInventory(id, amount) {
+    const item = this.inventory.find((i) => i.id === id);
+    if (!item) return null;
+    item.stock = Math.max(0, Number(item.stock) + Number(amount));
+    this.saveInventory();
+    this.emit("inventoryChanged", this.inventory);
+    return item;
+  }
+
+  updateInventoryItem(id, updates) {
+    const idx = this.inventory.findIndex((i) => i.id === id);
+    if (idx === -1) return null;
+    this.inventory[idx] = { ...this.inventory[idx], ...updates };
+    this.saveInventory();
+    this.emit("inventoryChanged", this.inventory);
+    return this.inventory[idx];
+  }
+
+  addInventoryItem(item) {
+    const newItem = {
+      id: "inv_" + Date.now(),
+      name: item.name.trim(),
+      category: item.category || "优质蛋白",
+      stock: Math.max(0, Number(item.stock) || 0),
+      unit: item.unit || "份",
+      threshold: Math.max(0, Number(item.threshold) || 2),
+      dailyUsage: Math.max(0.1, Number(item.dailyUsage) || 1),
+      icon: item.icon || "🥗"
+    };
+    this.inventory.push(newItem);
+    this.saveInventory();
+    this.emit("inventoryChanged", this.inventory);
+    return newItem;
+  }
+
+  deleteInventoryItem(id) {
+    this.inventory = this.inventory.filter((i) => i.id !== id);
+    this.saveInventory();
+    this.emit("inventoryChanged", this.inventory);
+  }
+
   exportDataJson() {
     return JSON.stringify(
       {
@@ -248,6 +330,7 @@ class Store {
         tasksByDate: this.tasksByDate,
         presets: this.presets,
         profile: this.profile,
+        inventory: this.inventory,
         exportedAt: new Date().toISOString()
       },
       null,
@@ -262,13 +345,16 @@ class Store {
       if (parsed.tasksByDate) this.tasksByDate = parsed.tasksByDate;
       if (parsed.presets) this.presets = parsed.presets;
       if (parsed.profile) this.profile = parsed.profile;
+      if (parsed.inventory) this.inventory = parsed.inventory;
       this.saveRecords();
       this.saveTasks();
       this.savePresets();
       this.saveProfile();
+      this.saveInventory();
       this.emit("tasksChanged", this.getTasksForSelectedDate());
       this.emit("presetsChanged", this.presets);
       this.emit("profileChanged", this.profile);
+      this.emit("inventoryChanged", this.inventory);
       return true;
     }
     return false;

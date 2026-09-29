@@ -6,6 +6,7 @@ import { DESK_RECOVERY_ROUTINE } from "../../data/exerciseData.js";
 import { DAILY_ROUTINE_TIMELINE, SLEEP_HYGIENE_RULES } from "../../data/routineData.js";
 import { MENTAL_RESILIENCE_KIT } from "../../data/mentalData.js";
 import { renderFitnessPlanView } from "./fitnessPlanView.js";
+import { renderInventoryModal } from "../inventory/inventoryModal.js";
 
 export function renderPlanContainer(currentPlanId = "diet_plan", onSelectPlan) {
   const container = document.createElement("div");
@@ -60,6 +61,10 @@ export function renderPlanContainer(currentPlanId = "diet_plan", onSelectPlan) {
       const pid = btn.getAttribute("data-plan");
       onSelectPlan(pid);
     });
+  });
+
+  container.querySelector("#plan-open-inventory-btn")?.addEventListener("click", () => {
+    renderInventoryModal();
   });
 
   return container;
@@ -145,6 +150,21 @@ function renderResearchPlanContent() {
 function renderDietPlanContent() {
   return `
     <div class="space-y-4">
+      <!-- 常用食材储备与补货提醒入口卡片 -->
+      <div class="p-4 sm:p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/50 flex flex-wrap items-center justify-between gap-3 shadow-sm">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl sm:text-3xl">🛒</span>
+          <div>
+            <h4 class="text-sm font-bold text-emerald-900 dark:text-emerald-200">常吃食材储备库与补货提醒中枢</h4>
+            <p class="text-xs text-emerald-700 dark:text-emerald-400 mt-0.5">水煮蛋、黑麦面包、牛奶、即食鸡胸肉及微量补剂存量动态追踪，见底预警</p>
+          </div>
+        </div>
+        <button id="plan-open-inventory-btn" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-sm transition-all flex items-center space-x-1.5">
+          <span>查看储备与补货清单</span>
+          <span>➔</span>
+        </button>
+      </div>
+
       ${DIET_PLAN.map((plan) => `
         <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-700 shadow-sm">
           <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-700/60 pb-3 mb-4">

@@ -2,12 +2,14 @@
 import { store } from "../../core/store.js";
 import { playGentleChime } from "../../core/utils.js";
 import { renderTaskModal } from "./taskModal.js";
+import { renderInventoryModal } from "../inventory/inventoryModal.js";
 
 export function renderTrackModulesView() {
   const container = document.createElement("div");
   container.className = "space-y-6";
 
   const tasks = store.getTasksForToday();
+  const lowStockCount = store.getLowStockItems().length;
 
   // 定义5大独立业务模块
   const modules = [
@@ -71,6 +73,20 @@ export function renderTrackModulesView() {
                   </div>
                 </div>
               </div>
+
+              ${mod.id === "diet" ? `
+                <div class="px-3.5 py-2 bg-emerald-50/70 dark:bg-emerald-950/30 border-b border-emerald-100 dark:border-emerald-900/40 flex items-center justify-between text-xs">
+                  <div class="flex items-center space-x-1.5 text-emerald-900 dark:text-emerald-200 font-semibold">
+                    <span>🛒</span>
+                    <span>常用食材储备</span>
+                    ${lowStockCount > 0 ? `<span class="px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold">${lowStockCount}件见底告急</span>` : `<span class="text-[10px] text-emerald-600 dark:text-emerald-400">储备充足</span>`}
+                  </div>
+                  <button id="open-inventory-btn" class="px-2.5 py-1 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-[11px] shadow-sm transition-all flex items-center space-x-1">
+                    <span>管理储备与补货</span>
+                    <span>➔</span>
+                  </button>
+                </div>
+              ` : ""}
 
               <!-- 任务条目列表 -->
               <div class="p-3 space-y-1.5 flex-grow">
@@ -193,6 +209,10 @@ export function renderTrackModulesView() {
       });
       document.body.appendChild(modal);
     });
+  });
+
+  container.querySelector("#open-inventory-btn")?.addEventListener("click", () => {
+    renderInventoryModal();
   });
 
   return container;

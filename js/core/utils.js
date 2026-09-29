@@ -46,3 +46,21 @@ export function safeJsonParse(str, fallback) {
     return fallback;
   }
 }
+
+export function showToast(message, duration = 2500) {
+  const existing = document.getElementById("global-toast");
+  if (existing) existing.remove();
+
+  const toast = document.createElement("div");
+  toast.id = "global-toast";
+  toast.className = "fixed bottom-16 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-2xl bg-slate-900/90 dark:bg-white/95 text-white dark:text-slate-900 text-xs sm:text-sm font-bold shadow-2xl backdrop-blur-md transition-all";
+  toast.style.cssText = "position: fixed; z-index: 9999;";
+  toast.textContent = message;
+
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+

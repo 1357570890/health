@@ -16,6 +16,7 @@ class SyncService {
     store.subscribe("tasksChanged", () => this.scheduleAutoPush());
     store.subscribe("stateChanged", () => this.scheduleAutoPush());
     store.subscribe("presetsChanged", () => this.scheduleAutoPush());
+    store.subscribe("inventoryChanged", () => this.scheduleAutoPush());
 
     // 页面切回前台（手机切回浏览器/电脑切回标签页）时自动拉取最新云端数据
     if (typeof window !== "undefined") {

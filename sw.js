@@ -1,5 +1,5 @@
-// 研途规划 Service Worker：毫秒级离线极速直出 (Network-First for HTML, Stale-While-Revalidate for Assets)
-const CACHE_NAME = "grad-plan-static-v2";
+// LifePlan 全域规划 Service Worker：毫秒级离线极速直出
+const CACHE_NAME = "lifeplan-static-v3";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",

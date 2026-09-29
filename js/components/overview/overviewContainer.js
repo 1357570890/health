@@ -2,12 +2,14 @@
 import { store } from "../../core/store.js";
 import { getTodayKey, getTodayDisplay, playGentleChime } from "../../core/utils.js";
 import { renderProfileModal } from "../profile/profileModal.js";
+import { renderInventoryModal } from "../inventory/inventoryModal.js";
 
 export function renderOverviewContainer(onNavigate) {
   const container = document.createElement("div");
   container.className = "space-y-6 animate-in fade-in duration-150";
 
   const todayStr = getTodayKey();
+  const lowStockItems = store.getLowStockItems();
   const tasks = typeof store.getTasksForDate === "function"
     ? store.getTasksForDate(todayStr)
     : (typeof store.getTasksForToday === "function" ? store.getTasksForToday() : (store.getTasksForSelectedDate ? store.getTasksForSelectedDate() : []));
@@ -129,6 +131,27 @@ export function renderOverviewContainer(onNavigate) {
   }
 
   container.innerHTML = `
+    ${lowStockItems.length > 0 ? `
+      <!-- 常吃食材补货预警通栏 -->
+      <div id="overview-inventory-alert" class="p-3.5 sm:p-4 rounded-2xl bg-amber-500/10 dark:bg-amber-950/30 border border-amber-300/80 dark:border-amber-800/60 flex items-center justify-between gap-3 cursor-pointer hover:bg-amber-500/15 transition-all">
+        <div class="flex items-center space-x-3">
+          <span class="text-xl sm:text-2xl animate-bounce">🛒</span>
+          <div>
+            <div class="text-xs sm:text-sm font-black text-amber-900 dark:text-amber-200 flex items-center space-x-2">
+              <span>常吃食材储备告急预警</span>
+              <span class="px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px] font-bold">${lowStockItems.length}项见底</span>
+            </div>
+            <p class="text-[11px] sm:text-xs text-amber-700 dark:text-amber-400 mt-0.5">
+              ${lowStockItems.slice(0, 3).map((i) => `${i.name}仅剩${i.stock}${i.unit}`).join("、")}等已低于安全线，点击一键查看采买单。
+            </p>
+          </div>
+        </div>
+        <button class="shrink-0 px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-bold text-xs shadow-sm transition-all">
+          补货清单 ➔
+        </button>
+      </div>
+    ` : ""}
+
     <!-- 1. 顶部总览驾驶舱 (极简专业质感) -->
     <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 sm:p-6 border border-slate-200/90 dark:border-slate-700/80 shadow-sm transition-all space-y-5">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -457,6 +480,10 @@ export function renderOverviewContainer(onNavigate) {
         onNavigate("daily");
       }
     });
+  });
+
+  container.querySelector("#overview-inventory-alert")?.addEventListener("click", () => {
+    renderInventoryModal();
   });
 
   return container;
