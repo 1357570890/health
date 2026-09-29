@@ -16,6 +16,19 @@
   <!-- 本地静态预编译样式 (0 外部网络请求，毫秒级极速直出) -->
   <link rel="stylesheet" href="./css/tailwind.min.css">
   <link rel="stylesheet" href="./css/style.css?v=3.0">
+  <!-- GitHub Pages SPA 路由重定向恢复脚本 (支持 /diet, /workout 等二级路径直达且刷新不404) -->
+  <script>
+    (function(l) {
+      if (l.search[1] === '/' ) {
+        var decoded = l.search.slice(1).split('&').map(function(s) { 
+          return s.replace(/~and~/g, '&');
+        }).join('?');
+        window.history.replaceState(null, null,
+          l.pathname.slice(0, -1) + decoded + l.hash
+        );
+      }
+    }(window.location));
+  </script>
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 antialiased selection:bg-emerald-500 selection:text-white">
   <!-- 挂载节点 -->

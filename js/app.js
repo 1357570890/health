@@ -4,25 +4,46 @@ import { renderDailyContainer } from "./components/daily/dailyContainer.js";
 import { renderTimetableContainer } from "./components/timetable/timetableContainer.js";
 import { renderPlanContainer } from "./components/plans/planContainer.js";
 import { renderToolContainer } from "./components/tools/toolContainer.js";
+import { renderInventoryModal } from "./components/inventory/inventoryModal.js";
 import { store } from "./core/store.js";
 import { syncService } from "./core/syncService.js";
+import { router } from "./core/router.js";
 import { playGentleChime } from "./core/utils.js";
 
 class App {
   constructor() {
-    // 默认展示全域规划总览中枢，总揽全局与分类导航
-    this.activeMode = "overview"; // 'overview' | 'daily' | 'timetable' | 'plans' | 'tools'
-    this.activePlanId = "diet_plan";
-    this.activeToolId = "tracker_tool";
+    // 依据当前 URL 语义推导初始激活的模式与子工具
+    const initialRoute = router.getCurrentRoute();
+    this.activeMode = initialRoute.mode || "overview";
+    this.activePlanId = (initialRoute.mode === "plans" && initialRoute.subId) ? initialRoute.subId : "diet_plan";
+    this.activeToolId = (initialRoute.mode === "tools" && initialRoute.subId) ? initialRoute.subId : "tracker_tool";
 
     this.appRoot = document.getElementById("app");
     this.initTheme();
     this.checkUrlSync();
     this.render();
 
+    // 如果是通过 /pantry 访问，初始化渲染后自动弹出食材储备库
+    if (initialRoute.isPantry) {
+      setTimeout(() => renderInventoryModal(), 200);
+    }
+
     // 订阅数据变动
     store.subscribe("stateChanged", () => {
       this.renderMainContent();
+    });
+
+    // 订阅浏览器前进后退事件
+    router.subscribe((route) => {
+      this.activeMode = route.mode || "overview";
+      if (route.subId) {
+        if (route.mode === "plans") this.activePlanId = route.subId;
+        if (route.mode === "tools") this.activeToolId = route.subId;
+      }
+      this.render();
+      if (route.isPantry) {
+        setTimeout(() => renderInventoryModal(), 150);
+      }
     });
   }
 
@@ -56,12 +77,16 @@ class App {
     }
   }
 
-  navigate(mode, subId) {
+  navigate(mode, subId, skipPush = false) {
     this.activeMode = mode;
     if (mode === "plans" && subId) {
       this.activePlanId = subId;
     } else if (mode === "tools" && subId) {
       this.activeToolId = subId;
+    }
+    if (!skipPush) {
+      const activeSub = mode === "plans" ? this.activePlanId : (mode === "tools" ? this.activeToolId : null);
+      router.push(mode, activeSub);
     }
     window.scrollTo({ top: 0, behavior: "smooth" });
     this.render();

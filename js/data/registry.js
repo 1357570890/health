@@ -78,6 +78,27 @@ export const TOOLS_REGISTRY = [
     summary: "一览今日饮食、拉伸、运动完成度与连续打卡活力总分。"
   },
   {
+    id: "badminton_tool",
+    title: "羽球能耗与双打记分板",
+    icon: "🏸",
+    badge: "羽球专属",
+    summary: "场上大字号对抗记分板，羽毛球击球热量、等效跑量与出汗补液换算。"
+  },
+  {
+    id: "macro_tool",
+    title: "TDEE与蛋白质宏量计算器",
+    icon: "⚖️",
+    badge: "能量调控",
+    summary: "结合久坐工位与3+2运动总消耗，推导每日蛋白质、碳水与饮水目标克数。"
+  },
+  {
+    id: "caffeine_tool",
+    title: "咖啡因半衰期与睡眠推导仪",
+    icon: "☕",
+    badge: "护脑安睡",
+    summary: "药代动力学测算睡前血液残留咖啡因，守卫夜间关键的慢波深睡眠。"
+  },
+  {
     id: "water_tool",
     title: "工位饮水与补剂记录器",
     icon: "💧",

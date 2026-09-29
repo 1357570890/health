@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>LifePlan - 路由跳转中...</title>
+    <script>
+      // GitHub Pages SPA Single Page App Routing Redirect
+      // 保持二级目录如 /plan/diet 或 /plan/workout 在 GitHub Pages 上直接访问不报 404
+      var pathSegmentsToKeep = 1; // 对应 /plan/ 这一级根路径
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

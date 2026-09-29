@@ -1,6 +1,9 @@
 // 工具箱顶层容器：聚合各类交互式打卡、换算、计时与同步工具
 import { TOOLS_REGISTRY } from "../../data/registry.js";
 import { renderTrackerTool } from "./trackerTool.js";
+import { renderBadmintonTool } from "./badmintonTool.js";
+import { renderMacroTdeeTool } from "./macroTdeeTool.js";
+import { renderCaffeineTool } from "./caffeineTool.js";
 import { renderFoodSubTool } from "./foodSubTool.js";
 import { renderWaterTool } from "./waterTool.js";
 import { renderDeskTimerTool } from "./deskTimerTool.js";
@@ -58,6 +61,15 @@ export function renderToolContainer(currentToolId = "tracker_tool", onSelectTool
     switch (currentTool.id) {
       case "tracker_tool":
         toolRenderBody.appendChild(renderTrackerTool());
+        break;
+      case "badminton_tool":
+        toolRenderBody.appendChild(renderBadmintonTool());
+        break;
+      case "macro_tool":
+        toolRenderBody.appendChild(renderMacroTdeeTool());
+        break;
+      case "caffeine_tool":
+        toolRenderBody.appendChild(renderCaffeineTool());
         break;
       case "substitute_tool":
         toolRenderBody.appendChild(renderFoodSubTool());
