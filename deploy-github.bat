@@ -6,9 +6,19 @@ set "BASE_DIR=%~dp0"
 cd /d "%BASE_DIR%"
 
 echo ==================================================
-echo 🚀 研途生活健康中枢 - GitHub Pages 部署与更新
+echo 🚀 研途规划 - GitHub Pages 部署与更新
 echo ==================================================
 echo 专属公网地址：https://1357570890.github.io/plan/
+echo.
+
+echo 📦 正在预编译打包前端核心 JavaScript 资源...
+call npx --yes esbuild js/app.js --bundle --minify --outfile=dist/app.bundle.js --format=esm
+if %errorlevel% neq 0 (
+  echo ❌ 编译打包失败，请检查脚本语法！
+  pause
+  exit /b %errorlevel%
+)
+echo ✅ 资源预编译完成 (dist/app.bundle.js)！
 echo.
 
 git status -s

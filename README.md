@@ -41,7 +41,7 @@
 ### 第1步：生成 GitHub 访问令牌 (Token)
 1. 登录 GitHub，点击右上角头像 ➜ **Settings**；
 2. 拉到最底部点击 **Developer settings** ➜ **Personal access tokens** ➜ **Tokens (classic)**；
-3. 点击 **Generate new token (classic)**，Note 填 `health`，**仅勾选 `gist` 这一项权限**，滑到底部点击绿色 **Generate token** 按钮；
+3. 点击 **Generate new token (classic)**，Note 填 `plan`，**仅勾选 `gist` 这一项权限**，滑到底部点击绿色 **Generate token** 按钮；
 4. 复制生成的以 `ghp_` 开头的令牌字符串。
 
 ### 第2步：在网页端一键连接

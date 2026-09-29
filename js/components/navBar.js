@@ -1,6 +1,7 @@
 // 响应式导航栏组件：电脑端顶部导航 + 手机端专属底部Dock导航 + 跨端云同步状态按钮
 import { syncService } from "../core/syncService.js";
 import { renderSyncModal } from "./sync/syncModal.js";
+import { renderProfileModal } from "./profile/profileModal.js";
 
 export function renderNavBar(activeMode, activeSubId, onNavigate) {
   const container = document.createElement("div");
@@ -79,14 +80,23 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
               .join("")}
           </div>
 
-          <!-- 右侧控件：跨端云同步状态 + 主题切换 -->
-          <div class="flex items-center space-x-2">
+          <!-- 右侧控件：工位偏好设置 + 跨端云同步状态 + 主题切换 -->
+          <div class="flex items-center space-x-1.5 sm:space-x-2">
+            <button
+              id="nav-profile-btn"
+              title="个人工位偏好与生活画像设置"
+              class="flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 transition-all"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+              <span class="hidden sm:inline">工位偏好</span>
+            </button>
+
             <div id="sync-badge-container">${getSyncBadgeHtml()}</div>
 
             <button
               id="theme-toggle"
               title="切换明暗色彩主题"
-              class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+              class="p-1.5 sm:p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
             >
               <span class="dark:hidden text-xs">🌙</span>
               <span class="hidden dark:inline text-xs">☀️</span>
@@ -140,6 +150,12 @@ export function renderNavBar(activeMode, activeSubId, onNavigate) {
     });
   };
   attachSyncClick();
+
+  // 打开个人偏好与工位设置弹窗
+  container.querySelector("#nav-profile-btn")?.addEventListener("click", () => {
+    const modal = renderProfileModal();
+    document.body.appendChild(modal);
+  });
 
   // 监听云同步状态变动更新右上角徽章
   syncService.subscribe(() => {
