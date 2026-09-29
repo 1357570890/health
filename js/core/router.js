@@ -16,7 +16,7 @@ class Router {
   detectBasePath() {
     if (typeof window === "undefined") return "/plan";
     const path = window.location.pathname;
-    if (path.startsWith("/plan")) {
+    if (path.startsWith("/plan") || path.startsWith("/pla")) {
       return "/plan";
     }
     return "";
@@ -26,14 +26,27 @@ class Router {
   getCurrentRoute() {
     if (typeof window === "undefined") return { mode: "overview" };
 
-    const fullPath = window.location.pathname;
-    let relPath = fullPath;
-    if (this.basePath && relPath.startsWith(this.basePath)) {
-      relPath = relPath.substring(this.basePath.length);
+    let relPath = "";
+    // 1. 优先检查 search 是否携带 SPA 转发参数 (如 ?/tools/water 或 ?/diet)
+    if (window.location.search && window.location.search.startsWith("?/")) {
+      const queryPart = window.location.search.slice(2).split("&")[0];
+      relPath = "/" + queryPart.replace(/~and~/g, "&").replace(/^\/+/, "");
+    } else {
+      let fullPath = window.location.pathname;
+      // 容错历史或异常情况下的 /pla 前缀
+      if (fullPath.startsWith("/pla/") || fullPath === "/pla") {
+        fullPath = fullPath.replace(/^\/pla/, "/plan");
+      }
+      relPath = fullPath;
+      if (this.basePath && relPath.startsWith(this.basePath)) {
+        relPath = relPath.substring(this.basePath.length);
+      }
     }
-    // 清理尾部与首部斜杠
+
+    // 清理尾部斜杠，并转小写确保匹配稳定
     relPath = relPath.replace(/\/+$/, "").toLowerCase();
     if (!relPath || relPath === "") relPath = "/";
+    if (!relPath.startsWith("/")) relPath = "/" + relPath;
 
     // 路由映射规则字典
     if (relPath === "/" || relPath === "/overview") {

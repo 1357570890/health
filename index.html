@@ -15,7 +15,7 @@
   
   <!-- 本地静态预编译样式 (0 外部网络请求，毫秒级极速直出) -->
   <link rel="stylesheet" href="./css/tailwind.min.css">
-  <link rel="stylesheet" href="./css/style.css?v=3.0">
+  <link rel="stylesheet" href="./css/style.css?v=4.0">
   <!-- GitHub Pages SPA 路由重定向恢复脚本 (支持 /diet, /workout 等二级路径直达且刷新不404) -->
   <script>
     (function(l) {
@@ -23,8 +23,10 @@
         var decoded = l.search.slice(1).split('&').map(function(s) { 
           return s.replace(/~and~/g, '&');
         }).join('?');
+        var basePath = l.pathname.endsWith('/') ? l.pathname.slice(0, -1) : l.pathname;
+        var cleanDecoded = decoded.startsWith('/') ? decoded : '/' + decoded;
         window.history.replaceState(null, null,
-          l.pathname.slice(0, -1) + decoded + l.hash
+          basePath + cleanDecoded + l.hash
         );
       }
     }(window.location));
@@ -35,7 +37,7 @@
   <div id="app"></div>
 
   <!-- 单文件预编译生产产物 (单次 HTTP 请求，彻底消灭瀑布流网络等待) -->
-  <script type="module" src="./dist/app.bundle.js?v=7.0"></script>
+  <script type="module" src="./dist/app.bundle.js?v=8.0"></script>
 
   <!-- Service Worker 本地持久化缓存：二次访问 0ms 直出 -->
   <script>

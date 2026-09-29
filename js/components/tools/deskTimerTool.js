@@ -34,10 +34,10 @@ export function renderDeskTimerTool() {
       </div>
 
       <div class="flex items-center space-x-3">
-        <button id="toggle-timer-btn" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-600/30 transition-all">
+        <button id="toggle-timer-btn" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-600/30 transition-all cursor-pointer">
           开始专注
         </button>
-        <button id="reset-timer-btn" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-600 dark:text-slate-300 text-sm font-semibold transition-all">
+        <button id="reset-timer-btn" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 text-sm font-bold transition-all cursor-pointer">
           重置
         </button>
       </div>
@@ -71,8 +71,8 @@ export function renderDeskTimerTool() {
 
   function start() {
     isRunning = true;
-    toggleBtn.textContent = "暂停";
-    toggleBtn.className = "px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow-md transition-all";
+    toggleBtn.textContent = "暂停专注";
+    toggleBtn.className = "px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow-md transition-all cursor-pointer";
     timerId = setInterval(() => {
       if (remainingSeconds > 0) {
         remainingSeconds--;
@@ -89,7 +89,7 @@ export function renderDeskTimerTool() {
     isRunning = false;
     clearInterval(timerId);
     toggleBtn.textContent = "开始专注";
-    toggleBtn.className = "px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-600/30 transition-all";
+    toggleBtn.className = "px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-600/30 transition-all cursor-pointer";
   }
 
   toggleBtn.addEventListener("click", () => {
@@ -114,9 +114,9 @@ export function renderDeskTimerTool() {
       updateDisplay();
 
       container.querySelectorAll(".timer-mode-btn").forEach((b) => {
-        b.className = "timer-mode-btn px-2.5 py-1 text-xs font-semibold rounded-lg text-slate-600 dark:text-slate-300";
+        b.className = "timer-mode-btn px-2.5 py-1 text-xs font-semibold rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 cursor-pointer";
       });
-      btn.className = "timer-mode-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-white dark:bg-slate-600 text-indigo-600 dark:text-indigo-300 shadow-sm";
+      btn.className = "timer-mode-btn px-2.5 py-1 text-xs font-bold rounded-lg bg-indigo-600 text-white shadow-sm cursor-pointer";
     });
   });
 

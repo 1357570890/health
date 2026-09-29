@@ -1,5 +1,5 @@
 // LifePlan 全域规划 Service Worker：毫秒级离线极速直出
-const CACHE_NAME = "lifeplan-static-v11";
+const CACHE_NAME = "lifeplan-static-v12";
 const ASSETS_TO_CACHE = [
   "./",
   "./index.html",
