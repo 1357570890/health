@@ -6,6 +6,7 @@ import { playGentleChime } from "../../core/utils.js";
 export function renderProfileModal() {
   const modal = document.createElement("div");
   modal.className = "fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150";
+  modal.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 9999 !important; display: flex !important; align-items: center !important; justify-content: center !important;";
 
   const profile = store.getUserProfile();
 

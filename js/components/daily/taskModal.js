@@ -3,6 +3,7 @@ export function renderTaskModal(initialData = null, onSave, onClose) {
   const isEdit = !!initialData;
   const overlay = document.createElement("div");
   overlay.className = "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200";
+  overlay.style.cssText = "position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important; width: 100vw !important; height: 100vh !important; z-index: 9999 !important; display: flex !important; align-items: center !important; justify-content: center !important;";
 
   const categories = [
     { id: "research", label: "科研实验攻坚", icon: "🔬" },

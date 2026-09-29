@@ -15,14 +15,14 @@
   
   <!-- 本地静态预编译样式 (0 外部网络请求，毫秒级极速直出) -->
   <link rel="stylesheet" href="./css/tailwind.min.css">
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style.css?v=3.0">
 </head>
 <body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 antialiased selection:bg-emerald-500 selection:text-white">
   <!-- 挂载节点 -->
   <div id="app"></div>
 
   <!-- 单文件预编译生产产物 (单次 HTTP 请求，彻底消灭瀑布流网络等待) -->
-  <script type="module" src="./dist/app.bundle.js?v=6.0"></script>
+  <script type="module" src="./dist/app.bundle.js?v=7.0"></script>
 
   <!-- Service Worker 本地持久化缓存：二次访问 0ms 直出 -->
   <script>
